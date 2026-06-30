@@ -1,0 +1,1374 @@
+{
+  "nodes": [
+    {
+      "id": "dsc",
+      "name": "DSC",
+      "type": "group",
+      "metadata": [],
+      "contexts": []
+    },
+    {
+      "id": "tony",
+      "name": "Tony",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "DSC",
+        "Yoyo"
+      ]
+    },
+    {
+      "id": "michael",
+      "name": "Michael",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "DSC"
+      ]
+    },
+    {
+      "id": "alva",
+      "name": "Alva",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "DSC"
+      ]
+    },
+    {
+      "id": "elvin",
+      "name": "Elvin",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "DSC"
+      ]
+    },
+    {
+      "id": "jerald",
+      "name": "Jerald",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "DSC"
+      ]
+    },
+    {
+      "id": "vish",
+      "name": "Vish",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "DSC"
+      ]
+    },
+    {
+      "id": "yash",
+      "name": "Yash",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "DSC"
+      ]
+    },
+    {
+      "id": "ojash",
+      "name": "Ojash",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "DSC"
+      ]
+    },
+    {
+      "id": "soosh",
+      "name": "Soosh",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "DSC"
+      ]
+    },
+    {
+      "id": "rohan",
+      "name": "Rohan",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "DSC"
+      ]
+    },
+    {
+      "id": "henry",
+      "name": "Henry",
+      "type": "person",
+      "metadata": [
+        "102"
+      ],
+      "contexts": [
+        "DSC"
+      ]
+    },
+    {
+      "id": "ryan",
+      "name": "Ryan",
+      "type": "person",
+      "metadata": [
+        "Oregon"
+      ],
+      "contexts": [
+        "winter 2026"
+      ]
+    },
+    {
+      "id": "andres",
+      "name": "Andres",
+      "type": "person",
+      "metadata": [],
+      "contexts": []
+    },
+    {
+      "id": "dylan",
+      "name": "Dylan",
+      "type": "person",
+      "metadata": [
+        "juggling"
+      ],
+      "contexts": []
+    },
+    {
+      "id": "dsc_148",
+      "name": "dsc 148",
+      "type": "group",
+      "metadata": [],
+      "contexts": []
+    },
+    {
+      "id": "jayden",
+      "name": "Jayden",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "dsc 148"
+      ]
+    },
+    {
+      "id": "brian",
+      "name": "Brian",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "dsc 148",
+        "dsc148 + 102"
+      ]
+    },
+    {
+      "id": "rudd",
+      "name": "Rudd",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "dsc 148"
+      ]
+    },
+    {
+      "id": "dsc148__102",
+      "name": "dsc148 + 102",
+      "type": "group",
+      "metadata": [],
+      "contexts": []
+    },
+    {
+      "id": "juggling_club",
+      "name": "Juggling club",
+      "type": "group",
+      "metadata": [],
+      "contexts": []
+    },
+    {
+      "id": "jules",
+      "name": "Jules",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "isaac",
+      "name": "Isaac",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "noel",
+      "name": "Noel",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "sicada",
+      "name": "Sicada",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "jaylin",
+      "name": "Jaylin",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "shu_wen",
+      "name": "Shu wen",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "sylvia",
+      "name": "Sylvia",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "aksheta",
+      "name": "Aksheta",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "clarissa",
+      "name": "Clarissa",
+      "type": "person",
+      "metadata": [
+        "roommate"
+      ],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "chris",
+      "name": "Chris",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "alvin",
+      "name": "Alvin",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "tanisha",
+      "name": "Tanisha",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "jade",
+      "name": "Jade",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club",
+        "winter 2026"
+      ]
+    },
+    {
+      "id": "jen",
+      "name": "Jen",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "chaz",
+      "name": "Chaz",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "emerald",
+      "name": "Emerald",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "lorenzo",
+      "name": "Lorenzo",
+      "type": "person",
+      "metadata": [
+        "cougar cosplay"
+      ],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "shania",
+      "name": "Shania",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "norman",
+      "name": "Norman",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "emanuel",
+      "name": "Emanuel",
+      "type": "person",
+      "metadata": [
+        "one wheel"
+      ],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "dave",
+      "name": "Dave",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "areli",
+      "name": "Areli",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "will",
+      "name": "Will",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club",
+        "gunn"
+      ]
+    },
+    {
+      "id": "zofia",
+      "name": "Zofia",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "nick",
+      "name": "Nick",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "josh",
+      "name": "Josh",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "saidy",
+      "name": "Saidy",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "amee",
+      "name": "Amee",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "victor",
+      "name": "Victor",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club",
+        "winter 2026"
+      ]
+    },
+    {
+      "id": "kai",
+      "name": "Kai",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "tristan",
+      "name": "Tristan",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "jex",
+      "name": "Jex",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "ana",
+      "name": "Ana",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club",
+        "gunn"
+      ]
+    },
+    {
+      "id": "angel",
+      "name": "Angel",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "emily",
+      "name": "Emily",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "madilyn",
+      "name": "Madilyn",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "aidan",
+      "name": "Aidan",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "alexander",
+      "name": "Alexander",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club",
+        "winter 2026"
+      ]
+    },
+    {
+      "id": "asha",
+      "name": "Asha",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "calliope",
+      "name": "Calliope",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Juggling club"
+      ]
+    },
+    {
+      "id": "winter_2026",
+      "name": "winter 2026",
+      "type": "group",
+      "metadata": [],
+      "contexts": []
+    },
+    {
+      "id": "carson",
+      "name": "Carson",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "winter 2026"
+      ]
+    },
+    {
+      "id": "lia",
+      "name": "Lia",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "winter 2026"
+      ]
+    },
+    {
+      "id": "zora",
+      "name": "Zora",
+      "type": "person",
+      "metadata": [
+        "miku"
+      ],
+      "contexts": [
+        "winter 2026"
+      ]
+    },
+    {
+      "id": "diana",
+      "name": "Diana",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "winter 2026"
+      ]
+    },
+    {
+      "id": "v",
+      "name": "V",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "winter 2026"
+      ]
+    },
+    {
+      "id": "johnathon_rong",
+      "name": "Johnathon Rong",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "winter 2026"
+      ]
+    },
+    {
+      "id": "brandon_long",
+      "name": "Brandon Long",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "winter 2026"
+      ]
+    },
+    {
+      "id": "mattin",
+      "name": "Mattin",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "winter 2026"
+      ]
+    },
+    {
+      "id": "aster",
+      "name": "Aster",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "winter 2026"
+      ]
+    },
+    {
+      "id": "anabelle",
+      "name": "Anabelle",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "winter 2026"
+      ]
+    },
+    {
+      "id": "alice",
+      "name": "Alice",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "winter 2026"
+      ]
+    },
+    {
+      "id": "evan",
+      "name": "Evan",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "winter 2026"
+      ]
+    },
+    {
+      "id": "sam",
+      "name": "Sam",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "winter 2026"
+      ]
+    },
+    {
+      "id": "eli",
+      "name": "Eli",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "winter 2026"
+      ]
+    },
+    {
+      "id": "caleb",
+      "name": "Caleb",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "winter 2026"
+      ]
+    },
+    {
+      "id": "utenah",
+      "name": "Utenah",
+      "type": "person",
+      "metadata": [
+        "u teh nuh"
+      ],
+      "contexts": [
+        "winter 2026"
+      ]
+    },
+    {
+      "id": "lujan",
+      "name": "Lujan",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "winter 2026"
+      ]
+    },
+    {
+      "id": "albert",
+      "name": "Albert",
+      "type": "person",
+      "metadata": [
+        "dragon boat"
+      ],
+      "contexts": [
+        "winter 2026"
+      ]
+    },
+    {
+      "id": "yoyo",
+      "name": "Yoyo",
+      "type": "group",
+      "metadata": [],
+      "contexts": []
+    },
+    {
+      "id": "alex",
+      "name": "Alex",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Yoyo"
+      ]
+    },
+    {
+      "id": "willo",
+      "name": "Willo",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Yoyo"
+      ]
+    },
+    {
+      "id": "yuhang",
+      "name": "Yuhang",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Yoyo"
+      ]
+    },
+    {
+      "id": "david",
+      "name": "David",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Yoyo"
+      ]
+    },
+    {
+      "id": "sean",
+      "name": "Sean",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "Yoyo"
+      ]
+    },
+    {
+      "id": "origami",
+      "name": "origami",
+      "type": "group",
+      "metadata": [],
+      "contexts": []
+    },
+    {
+      "id": "alden",
+      "name": "Alden",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "origami"
+      ]
+    },
+    {
+      "id": "jason",
+      "name": "Jason",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "origami"
+      ]
+    },
+    {
+      "id": "gunn",
+      "name": "gunn",
+      "type": "group",
+      "metadata": [],
+      "contexts": []
+    },
+    {
+      "id": "sophia",
+      "name": "Sophia",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "gunn"
+      ]
+    },
+    {
+      "id": "kim",
+      "name": "Kim",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "gunn"
+      ]
+    },
+    {
+      "id": "sparrow",
+      "name": "Sparrow",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "gunn"
+      ]
+    },
+    {
+      "id": "bihuh",
+      "name": "Bihuh",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "gunn"
+      ]
+    },
+    {
+      "id": "ashley_mateo",
+      "name": "Ashley Mateo",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "gunn"
+      ]
+    },
+    {
+      "id": "sydney",
+      "name": "Sydney",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "gunn"
+      ]
+    },
+    {
+      "id": "board_games_club",
+      "name": "board games club",
+      "type": "group",
+      "metadata": [],
+      "contexts": []
+    },
+    {
+      "id": "hanlin",
+      "name": "Hanlin",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "board games club"
+      ]
+    },
+    {
+      "id": "aikyam",
+      "name": "aikyam",
+      "type": "group",
+      "metadata": [],
+      "contexts": []
+    },
+    {
+      "id": "sachin",
+      "name": "Sachin",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "aikyam"
+      ]
+    },
+    {
+      "id": "pranav",
+      "name": "Pranav",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "aikyam"
+      ]
+    },
+    {
+      "id": "anya",
+      "name": "Anya",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "aikyam"
+      ]
+    },
+    {
+      "id": "sharvari",
+      "name": "Sharvari",
+      "type": "person",
+      "metadata": [],
+      "contexts": [
+        "aikyam"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "amee",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "mattin",
+      "target": "winter_2026",
+      "type": "membership"
+    },
+    {
+      "source": "asha",
+      "target": "calliope",
+      "type": "introduction"
+    },
+    {
+      "source": "kim",
+      "target": "gunn",
+      "type": "membership"
+    },
+    {
+      "source": "noel",
+      "target": "jaylin",
+      "type": "introduction"
+    },
+    {
+      "source": "tony",
+      "target": "michael",
+      "type": "introduction"
+    },
+    {
+      "source": "yuhang",
+      "target": "yoyo",
+      "type": "membership"
+    },
+    {
+      "source": "tony",
+      "target": "alva",
+      "type": "introduction"
+    },
+    {
+      "source": "alexander",
+      "target": "winter_2026",
+      "type": "membership"
+    },
+    {
+      "source": "evan",
+      "target": "winter_2026",
+      "type": "membership"
+    },
+    {
+      "source": "alden",
+      "target": "origami",
+      "type": "membership"
+    },
+    {
+      "source": "sophia",
+      "target": "gunn",
+      "type": "membership"
+    },
+    {
+      "source": "madilyn",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "alice",
+      "target": "winter_2026",
+      "type": "membership"
+    },
+    {
+      "source": "emily",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "saidy",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "alexander",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "sachin",
+      "target": "aikyam",
+      "type": "membership"
+    },
+    {
+      "source": "david",
+      "target": "yoyo",
+      "type": "membership"
+    },
+    {
+      "source": "jason",
+      "target": "origami",
+      "type": "membership"
+    },
+    {
+      "source": "areli",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "kai",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "jex",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "ana",
+      "target": "gunn",
+      "type": "membership"
+    },
+    {
+      "source": "sam",
+      "target": "eli",
+      "type": "introduction"
+    },
+    {
+      "source": "victor",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "jen",
+      "target": "emerald",
+      "type": "introduction"
+    },
+    {
+      "source": "sam",
+      "target": "caleb",
+      "type": "introduction"
+    },
+    {
+      "source": "alex",
+      "target": "willo",
+      "type": "introduction"
+    },
+    {
+      "source": "aksheta",
+      "target": "chris",
+      "type": "introduction"
+    },
+    {
+      "source": "vish",
+      "target": "rohan",
+      "type": "introduction"
+    },
+    {
+      "source": "angel",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "aksheta",
+      "target": "tanisha",
+      "type": "introduction"
+    },
+    {
+      "source": "aster",
+      "target": "winter_2026",
+      "type": "membership"
+    },
+    {
+      "source": "brian",
+      "target": "dsc_148",
+      "type": "membership"
+    },
+    {
+      "source": "lujan",
+      "target": "winter_2026",
+      "type": "membership"
+    },
+    {
+      "source": "albert",
+      "target": "winter_2026",
+      "type": "membership"
+    },
+    {
+      "source": "utenah",
+      "target": "winter_2026",
+      "type": "membership"
+    },
+    {
+      "source": "jayden",
+      "target": "dsc_148",
+      "type": "membership"
+    },
+    {
+      "source": "aksheta",
+      "target": "alvin",
+      "type": "introduction"
+    },
+    {
+      "source": "pranav",
+      "target": "aikyam",
+      "type": "membership"
+    },
+    {
+      "source": "tony",
+      "target": "yoyo",
+      "type": "membership"
+    },
+    {
+      "source": "anabelle",
+      "target": "victor",
+      "type": "introduction"
+    },
+    {
+      "source": "ryan",
+      "target": "winter_2026",
+      "type": "membership"
+    },
+    {
+      "source": "zora",
+      "target": "winter_2026",
+      "type": "membership"
+    },
+    {
+      "source": "hanlin",
+      "target": "board_games_club",
+      "type": "membership"
+    },
+    {
+      "source": "brian",
+      "target": "dsc148__102",
+      "type": "membership"
+    },
+    {
+      "source": "bihuh",
+      "target": "gunn",
+      "type": "membership"
+    },
+    {
+      "source": "ana",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "shu_wen",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "v",
+      "target": "winter_2026",
+      "type": "membership"
+    },
+    {
+      "source": "dave",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "diana",
+      "target": "winter_2026",
+      "type": "membership"
+    },
+    {
+      "source": "aksheta",
+      "target": "clarissa",
+      "type": "introduction"
+    },
+    {
+      "source": "will",
+      "target": "gunn",
+      "type": "membership"
+    },
+    {
+      "source": "jen",
+      "target": "shania",
+      "type": "introduction"
+    },
+    {
+      "source": "noel",
+      "target": "sicada",
+      "type": "introduction"
+    },
+    {
+      "source": "jen",
+      "target": "jen",
+      "type": "introduction"
+    },
+    {
+      "source": "elvin",
+      "target": "jerald",
+      "type": "introduction"
+    },
+    {
+      "source": "rudd",
+      "target": "dsc_148",
+      "type": "membership"
+    },
+    {
+      "source": "jules",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "vish",
+      "target": "yash",
+      "type": "introduction"
+    },
+    {
+      "source": "brandon_long",
+      "target": "winter_2026",
+      "type": "membership"
+    },
+    {
+      "source": "jade",
+      "target": "winter_2026",
+      "type": "membership"
+    },
+    {
+      "source": "henry",
+      "target": "dsc",
+      "type": "membership"
+    },
+    {
+      "source": "norman",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "lia",
+      "target": "winter_2026",
+      "type": "membership"
+    },
+    {
+      "source": "aidan",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "johnathon_rong",
+      "target": "winter_2026",
+      "type": "membership"
+    },
+    {
+      "source": "will",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "vish",
+      "target": "ojash",
+      "type": "introduction"
+    },
+    {
+      "source": "tristan",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "ashley_mateo",
+      "target": "gunn",
+      "type": "membership"
+    },
+    {
+      "source": "sylvia",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "sharvari",
+      "target": "aikyam",
+      "type": "membership"
+    },
+    {
+      "source": "sean",
+      "target": "yoyo",
+      "type": "membership"
+    },
+    {
+      "source": "jade",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "sydney",
+      "target": "gunn",
+      "type": "membership"
+    },
+    {
+      "source": "nick",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "zofia",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "sparrow",
+      "target": "gunn",
+      "type": "membership"
+    },
+    {
+      "source": "anya",
+      "target": "aikyam",
+      "type": "membership"
+    },
+    {
+      "source": "vish",
+      "target": "soosh",
+      "type": "introduction"
+    },
+    {
+      "source": "isaac",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "jen",
+      "target": "lorenzo",
+      "type": "introduction"
+    },
+    {
+      "source": "jen",
+      "target": "chaz",
+      "type": "introduction"
+    },
+    {
+      "source": "carson",
+      "target": "winter_2026",
+      "type": "membership"
+    },
+    {
+      "source": "josh",
+      "target": "juggling_club",
+      "type": "membership"
+    }
+  ]
+}
