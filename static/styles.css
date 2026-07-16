@@ -1,0 +1,298 @@
+/* static/styles.css */
+:root {
+    --bg-color: #0b0f19;
+    --panel-bg: rgba(15, 23, 42, 0.45);
+    --panel-border: rgba(255, 255, 255, 0.08);
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --accent-color: #3b82f6; /* Blue */
+    --color-owner: #38bdf8;  /* Light blue glow */
+    --color-group: #ec4899;  /* Pink */
+    --color-person: #10b981; /* Emerald Green */
+    --font-stack: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: var(--font-stack);
+    overflow: hidden;
+    height: 100vh;
+}
+
+#app-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+}
+
+#canvas-container {
+    width: 100%;
+    height: 100%;
+}
+
+#graph-svg {
+    width: 100%;
+    height: 100%;
+    cursor: grab;
+}
+
+#graph-svg:active {
+    cursor: grabbing;
+}
+
+/* Glassmorphism Panels */
+.glass-panel {
+    background: var(--panel-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--panel-border);
+    border-radius: 16px;
+    padding: 24px;
+    color: var(--text-primary);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    z-index: 10;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#control-panel {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 320px;
+}
+
+#control-panel h1 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: -0.5px;
+}
+
+.subtitle {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+}
+
+.control-group {
+    margin-bottom: 20px;
+}
+
+.control-group h3 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+}
+
+/* Form Styles */
+label {
+    display: block;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+}
+
+input[type="text"] {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--panel-border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: var(--text-primary);
+    font-family: var(--font-stack);
+    outline: none;
+    transition: border 0.2s;
+}
+
+input[type="text"]:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+/* Checkbox Style */
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    font-size: 13px;
+    margin-bottom: 8px;
+    user-select: none;
+}
+
+.checkbox-container input {
+    margin-right: 10px;
+    cursor: pointer;
+    accent-color: var(--accent-color);
+}
+
+/* Legend dots */
+.legend-item {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    margin-bottom: 6px;
+    color: var(--text-secondary);
+}
+
+.legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 10px;
+    display: inline-block;
+}
+
+.user-node { background-color: var(--color-owner); box-shadow: 0 0 8px var(--color-owner); }
+.group-node { background-color: var(--color-group); box-shadow: 0 0 8px var(--color-group); }
+.person-node { background-color: var(--color-person); box-shadow: 0 0 8px var(--color-person); }
+
+button {
+    width: 100%;
+    background: var(--accent-color);
+    color: var(--text-primary);
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+button:hover {
+    background: #2563eb;
+}
+
+/* Detail Info Card */
+#detail-card {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    width: 320px;
+}
+
+#close-card-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 0;
+}
+
+#card-name {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+#card-type-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.card-section {
+    margin-bottom: 12px;
+}
+
+.card-section strong {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+}
+
+.tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 12px;
+}
+
+.tag {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    padding: 4px 8px;
+}
+
+/* D3 Graph Aesthetics */
+.link {
+    stroke-opacity: 0.25;
+    transition: stroke-opacity 0.2s, stroke-width 0.2s;
+}
+
+.link.introduction {
+    stroke: #94a3b8;
+    stroke-width: 1.5px;
+}
+
+.link.membership {
+    stroke: #ec4899;
+    stroke-width: 1px;
+    stroke-dasharray: 4, 4;
+}
+
+.node circle {
+    stroke: var(--bg-color);
+    stroke-width: 2px;
+    transition: r 0.2s, stroke-width 0.2s;
+}
+
+.node text {
+    fill: var(--text-secondary);
+    font-size: 11px;
+    pointer-events: none;
+    transition: fill 0.2s, font-size 0.2s;
+}
+
+/* Hover & Active highlights */
+.node:hover circle {
+    stroke-width: 3px;
+    stroke: #ffffff;
+}
+
+.node:hover text {
+    fill: var(--text-primary);
+    font-weight: 600;
+}
+
+.highlighted circle {
+    stroke: #ffffff !important;
+    stroke-width: 3px;
+}
+
+.highlighted text {
+    fill: #ffffff !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+}
+
+.dimmed {
+    opacity: 0.15 !important;
+}

@@ -1,0 +1,71 @@
+<!-- static/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal CRM - Social Graph</title>
+    <!-- Outfit Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/styles.css">
+    <!-- D3.js Library -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <div id="app-container">
+        <!-- Floating Glassmorphic Control Panel -->
+        <header class="glass-panel" id="control-panel">
+            <h1>Social Graph</h1>
+            <p class="subtitle">Personal CRM Network Visualization</p>
+
+            <div class="control-group">
+                <label for="search-input">Search Contact</label>
+                <input type="text" id="search-input" placeholder="Type a name to search..." autocomplete="off">
+            </div>
+
+            <div class="control-group">
+                <h3>Edge Filters</h3>
+                <label class="checkbox-container">
+                    <input type="checkbox" id="filter-membership" checked>
+                    <span class="checkmark"></span> Membership (dashed)
+                </label>
+                <label class="checkbox-container">
+                    <input type="checkbox" id="filter-introduction" checked>
+                    <span class="checkmark"></span> Introduction (solid)
+                </label>
+            </div>
+
+            <div class="control-group">
+                <h3>Legend</h3>
+                <div class="legend-item"><span class="legend-dot user-node"></span> Owner (You)</div>
+                <div class="legend-item"><span class="legend-dot group-node"></span> Group Context</div>
+                <div class="legend-item"><span class="legend-dot person-node"></span> Person Node</div>
+            </div>
+            
+            <button id="reset-button">Reset Layout</button>
+        </header>
+
+        <!-- SVG Container for D3 Canvas -->
+        <div id="canvas-container">
+            <svg id="graph-svg"></svg>
+        </div>
+
+        <!-- Translucent Detail Tooltip Card -->
+        <div class="glass-panel" id="detail-card" style="display: none;">
+            <button id="close-card-btn">&times;</button>
+            <h2 id="card-name">Name</h2>
+            <div id="card-type-badge">Type</div>
+            <div class="card-section">
+                <strong>Metadata/Hobbies:</strong>
+                <div id="card-metadata" class="tags-container">None</div>
+            </div>
+            <div class="card-section">
+                <strong>Social Contexts:</strong>
+                <div id="card-contexts" class="tags-container">None</div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/static/app.js"></script>
+</body>
+</html>
