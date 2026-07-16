@@ -47,8 +47,8 @@ def get_graph_data():
     with get_db_connection() as conn:
         with conn.cursor() as cursor:
             try:
-                # 1. Fetch Nodes
-                cursor.execute("SELECT id, name, type, metadata, contexts FROM nodes;")
+                # 1. Fetch Nodes (Excluding owner)
+                cursor.execute("SELECT id, name, type, metadata, contexts FROM nodes WHERE id <> 'eric_gan';")
                 for row in cursor.fetchall():
                     nodes.append({
                         "id": row[0],
@@ -58,8 +58,8 @@ def get_graph_data():
                         "contexts": row[4]  # JSONB list
                     })
                 
-                # 2. Fetch Edges
-                cursor.execute("SELECT source, target, type, context FROM edges;")
+                # 2. Fetch Edges (Excluding edges connected to owner)
+                cursor.execute("SELECT source, target, type, context FROM edges WHERE source <> 'eric_gan' AND target <> 'eric_gan';")
                 for row in cursor.fetchall():
                     edges.append({
                         "source": row[0],

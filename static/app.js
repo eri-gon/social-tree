@@ -3,7 +3,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     // Config values
     const colors = {
-        owner: "#38bdf8",
         group: "#ec4899",
         person: "#10b981",
         default: "#94a3b8"
@@ -103,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
             activeNodeIds.add(typeof l.target === 'object' ? l.target.id : l.target);
         });
 
-        const filteredNodes = allNodes.filter(n => activeNodeIds.has(n.id) || n.id === "eric_gan");
+        const filteredNodes = allNodes.filter(n => activeNodeIds.has(n.id));
 
         // 1. Draw Links
         linkElements = g.append("g")
@@ -128,17 +127,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Append circles to nodes
         nodeElements.append("circle")
-            .attr("r", d => {
-                if (d.id === "eric_gan") return 14;
-                return d.type === "group" ? 10 : 7;
-            })
-            .attr("fill", d => {
-                if (d.id === "eric_gan") return colors.owner;
-                return d.type === "group" ? colors.group : colors.person;
-            })
+            .attr("r", d => d.type === "group" ? 10 : 7)
+            .attr("fill", d => d.type === "group" ? colors.group : colors.person)
             .style("filter", d => {
                 // Drop-shadow glow effects
-                const color = d.id === "eric_gan" ? colors.owner : (d.type === "group" ? colors.group : colors.person);
+                const color = d.type === "group" ? colors.group : colors.person;
                 return `drop-shadow(0px 0px 4px ${color}80)`;
             });
 
@@ -171,9 +164,9 @@ document.addEventListener("DOMContentLoaded", () => {
         event.stopPropagation();
         
         cardName.textContent = d.name;
-        cardTypeBadge.textContent = d.id === "eric_gan" ? "Owner" : d.type;
-        cardTypeBadge.style.backgroundColor = d.id === "eric_gan" ? colors.owner + "40" : (d.type === "group" ? colors.group + "40" : colors.person + "40");
-        cardTypeBadge.style.color = d.id === "eric_gan" ? colors.owner : (d.type === "group" ? colors.group : colors.person);
+        cardTypeBadge.textContent = d.type;
+        cardTypeBadge.style.backgroundColor = d.type === "group" ? colors.group + "40" : colors.person + "40";
+        cardTypeBadge.style.color = d.type === "group" ? colors.group : colors.person;
 
         // Set metadata tags
         cardMetadata.innerHTML = "";

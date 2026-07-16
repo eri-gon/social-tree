@@ -6,7 +6,6 @@
     --text-primary: #f8fafc;
     --text-secondary: #94a3b8;
     --accent-color: #3b82f6; /* Blue */
-    --color-owner: #38bdf8;  /* Light blue glow */
     --color-group: #ec4899;  /* Pink */
     --color-person: #10b981; /* Emerald Green */
     --font-stack: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -152,7 +151,6 @@ input[type="text"]:focus {
     display: inline-block;
 }
 
-.user-node { background-color: var(--color-owner); box-shadow: 0 0 8px var(--color-owner); }
 .group-node { background-color: var(--color-group); box-shadow: 0 0 8px var(--color-group); }
 .person-node { background-color: var(--color-person); box-shadow: 0 0 8px var(--color-person); }
 
