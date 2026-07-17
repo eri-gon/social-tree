@@ -40,12 +40,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     svg.call(zoom);
 
-    // D3 Force Simulation Setup
+    // D3 Force Simulation Setup with custom gravity and tighter settings
     const simulation = d3.forceSimulation()
-        .force("link", d3.forceLink().id(d => d.id).distance(100))
-        .force("charge", d3.forceManyBody().strength(-200))
+        .force("link", d3.forceLink().id(d => d.id).distance(d => d.type === "membership" ? 35 : 60))
+        .force("charge", d3.forceManyBody().strength(-80))
         .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("collision", d3.forceCollide().radius(30));
+        .force("collision", d3.forceCollide().radius(18))
+        .force("x", d3.forceX(width / 2).strength(0.08))
+        .force("y", d3.forceY(height / 2).strength(0.08));
 
     // Graph Data Holders
     let allNodes = [];
@@ -307,6 +309,8 @@ document.addEventListener("DOMContentLoaded", () => {
         height = container.node().clientHeight;
         svg.attr("width", width).attr("height", height);
         simulation.force("center", d3.forceCenter(width / 2, height / 2));
+        simulation.force("x", d3.forceX(width / 2).strength(0.08));
+        simulation.force("y", d3.forceY(height / 2).strength(0.08));
         simulation.alpha(0.3).restart();
     });
 });
