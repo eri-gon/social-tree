@@ -3,6 +3,7 @@ import json
 import psycopg2
 from psycopg2.extras import Json
 import sys
+import os
 
 def load_graph(json_path, db_config):
     # Read graph_data.json
@@ -111,4 +112,11 @@ if __name__ == "__main__":
         "password": "password123",
         "database": "keep_social_graph"
     }
-    load_graph("graph_data.json", db_credentials)
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    default_json_path = os.path.join(script_dir, "..", "parser", "graph_data.json")
+    
+    json_path = default_json_path
+    if len(sys.argv) > 1:
+        json_path = sys.argv[1]
+        
+    load_graph(json_path, db_credentials)

@@ -931,118 +931,28 @@
   ],
   "edges": [
     {
-      "source": "amee",
+      "source": "jade",
       "target": "juggling_club",
       "type": "membership"
     },
     {
-      "source": "mattin",
+      "source": "carson",
       "target": "winter_2026",
       "type": "membership"
     },
     {
-      "source": "asha",
-      "target": "calliope",
+      "source": "vish",
+      "target": "soosh",
       "type": "introduction"
     },
     {
-      "source": "kim",
-      "target": "gunn",
-      "type": "membership"
-    },
-    {
-      "source": "noel",
-      "target": "jaylin",
-      "type": "introduction"
-    },
-    {
-      "source": "tony",
-      "target": "michael",
-      "type": "introduction"
-    },
-    {
-      "source": "yuhang",
-      "target": "yoyo",
-      "type": "membership"
-    },
-    {
-      "source": "tony",
-      "target": "alva",
-      "type": "introduction"
-    },
-    {
-      "source": "alexander",
-      "target": "winter_2026",
-      "type": "membership"
-    },
-    {
-      "source": "evan",
-      "target": "winter_2026",
-      "type": "membership"
-    },
-    {
-      "source": "alden",
-      "target": "origami",
-      "type": "membership"
-    },
-    {
-      "source": "sophia",
-      "target": "gunn",
-      "type": "membership"
-    },
-    {
-      "source": "madilyn",
+      "source": "jules",
       "target": "juggling_club",
       "type": "membership"
     },
     {
-      "source": "alice",
-      "target": "winter_2026",
-      "type": "membership"
-    },
-    {
-      "source": "emily",
-      "target": "juggling_club",
-      "type": "membership"
-    },
-    {
-      "source": "saidy",
-      "target": "juggling_club",
-      "type": "membership"
-    },
-    {
-      "source": "alexander",
-      "target": "juggling_club",
-      "type": "membership"
-    },
-    {
-      "source": "sachin",
-      "target": "aikyam",
-      "type": "membership"
-    },
-    {
-      "source": "david",
-      "target": "yoyo",
-      "type": "membership"
-    },
-    {
-      "source": "jason",
-      "target": "origami",
-      "type": "membership"
-    },
-    {
-      "source": "areli",
-      "target": "juggling_club",
-      "type": "membership"
-    },
-    {
-      "source": "kai",
-      "target": "juggling_club",
-      "type": "membership"
-    },
-    {
-      "source": "jex",
-      "target": "juggling_club",
+      "source": "brian",
+      "target": "dsc148__102",
       "type": "membership"
     },
     {
@@ -1051,12 +961,17 @@
       "type": "membership"
     },
     {
-      "source": "sam",
-      "target": "eli",
+      "source": "henry",
+      "target": "dsc",
+      "type": "membership"
+    },
+    {
+      "source": "vish",
+      "target": "rohan",
       "type": "introduction"
     },
     {
-      "source": "victor",
+      "source": "amee",
       "target": "juggling_club",
       "type": "membership"
     },
@@ -1066,53 +981,23 @@
       "type": "introduction"
     },
     {
-      "source": "sam",
-      "target": "caleb",
-      "type": "introduction"
-    },
-    {
-      "source": "alex",
-      "target": "willo",
-      "type": "introduction"
-    },
-    {
-      "source": "aksheta",
-      "target": "chris",
-      "type": "introduction"
-    },
-    {
-      "source": "vish",
-      "target": "rohan",
-      "type": "introduction"
-    },
-    {
-      "source": "angel",
-      "target": "juggling_club",
-      "type": "membership"
-    },
-    {
-      "source": "aksheta",
-      "target": "tanisha",
-      "type": "introduction"
-    },
-    {
-      "source": "aster",
-      "target": "winter_2026",
-      "type": "membership"
-    },
-    {
-      "source": "brian",
-      "target": "dsc_148",
-      "type": "membership"
-    },
-    {
-      "source": "lujan",
-      "target": "winter_2026",
-      "type": "membership"
-    },
-    {
       "source": "albert",
       "target": "winter_2026",
+      "type": "membership"
+    },
+    {
+      "source": "will",
+      "target": "gunn",
+      "type": "membership"
+    },
+    {
+      "source": "asha",
+      "target": "calliope",
+      "type": "introduction"
+    },
+    {
+      "source": "alden",
+      "target": "origami",
       "type": "membership"
     },
     {
@@ -1121,88 +1006,8 @@
       "type": "membership"
     },
     {
-      "source": "jayden",
-      "target": "dsc_148",
-      "type": "membership"
-    },
-    {
-      "source": "aksheta",
-      "target": "alvin",
-      "type": "introduction"
-    },
-    {
-      "source": "pranav",
-      "target": "aikyam",
-      "type": "membership"
-    },
-    {
-      "source": "tony",
-      "target": "yoyo",
-      "type": "membership"
-    },
-    {
-      "source": "anabelle",
-      "target": "victor",
-      "type": "introduction"
-    },
-    {
-      "source": "ryan",
-      "target": "winter_2026",
-      "type": "membership"
-    },
-    {
-      "source": "zora",
-      "target": "winter_2026",
-      "type": "membership"
-    },
-    {
-      "source": "hanlin",
-      "target": "board_games_club",
-      "type": "membership"
-    },
-    {
-      "source": "brian",
-      "target": "dsc148__102",
-      "type": "membership"
-    },
-    {
-      "source": "bihuh",
-      "target": "gunn",
-      "type": "membership"
-    },
-    {
-      "source": "ana",
+      "source": "alexander",
       "target": "juggling_club",
-      "type": "membership"
-    },
-    {
-      "source": "shu_wen",
-      "target": "juggling_club",
-      "type": "membership"
-    },
-    {
-      "source": "v",
-      "target": "winter_2026",
-      "type": "membership"
-    },
-    {
-      "source": "dave",
-      "target": "juggling_club",
-      "type": "membership"
-    },
-    {
-      "source": "diana",
-      "target": "winter_2026",
-      "type": "membership"
-    },
-    {
-      "source": "aksheta",
-      "target": "clarissa",
-      "type": "introduction"
-    },
-    {
-      "source": "will",
-      "target": "gunn",
       "type": "membership"
     },
     {
@@ -1211,62 +1016,17 @@
       "type": "introduction"
     },
     {
-      "source": "noel",
-      "target": "sicada",
-      "type": "introduction"
-    },
-    {
-      "source": "jen",
-      "target": "jen",
-      "type": "introduction"
-    },
-    {
-      "source": "elvin",
-      "target": "jerald",
-      "type": "introduction"
-    },
-    {
-      "source": "rudd",
-      "target": "dsc_148",
-      "type": "membership"
-    },
-    {
-      "source": "jules",
-      "target": "juggling_club",
-      "type": "membership"
-    },
-    {
-      "source": "vish",
-      "target": "yash",
-      "type": "introduction"
-    },
-    {
-      "source": "brandon_long",
+      "source": "lujan",
       "target": "winter_2026",
       "type": "membership"
     },
     {
-      "source": "jade",
-      "target": "winter_2026",
-      "type": "membership"
+      "source": "sam",
+      "target": "eli",
+      "type": "introduction"
     },
     {
-      "source": "henry",
-      "target": "dsc",
-      "type": "membership"
-    },
-    {
-      "source": "norman",
-      "target": "juggling_club",
-      "type": "membership"
-    },
-    {
-      "source": "lia",
-      "target": "winter_2026",
-      "type": "membership"
-    },
-    {
-      "source": "aidan",
+      "source": "jex",
       "target": "juggling_club",
       "type": "membership"
     },
@@ -1276,32 +1036,47 @@
       "type": "membership"
     },
     {
-      "source": "will",
-      "target": "juggling_club",
-      "type": "membership"
-    },
-    {
-      "source": "vish",
-      "target": "ojash",
+      "source": "sam",
+      "target": "caleb",
       "type": "introduction"
     },
     {
-      "source": "tristan",
+      "source": "brandon_long",
+      "target": "winter_2026",
+      "type": "membership"
+    },
+    {
+      "source": "david",
+      "target": "yoyo",
+      "type": "membership"
+    },
+    {
+      "source": "zofia",
       "target": "juggling_club",
       "type": "membership"
     },
     {
-      "source": "ashley_mateo",
+      "source": "lia",
+      "target": "winter_2026",
+      "type": "membership"
+    },
+    {
+      "source": "kim",
       "target": "gunn",
       "type": "membership"
     },
     {
-      "source": "sylvia",
-      "target": "juggling_club",
+      "source": "jen",
+      "target": "chaz",
+      "type": "introduction"
+    },
+    {
+      "source": "sparrow",
+      "target": "gunn",
       "type": "membership"
     },
     {
-      "source": "sharvari",
+      "source": "sachin",
       "target": "aikyam",
       "type": "membership"
     },
@@ -1311,28 +1086,13 @@
       "type": "membership"
     },
     {
-      "source": "jade",
-      "target": "juggling_club",
-      "type": "membership"
-    },
-    {
       "source": "sydney",
       "target": "gunn",
       "type": "membership"
     },
     {
-      "source": "nick",
-      "target": "juggling_club",
-      "type": "membership"
-    },
-    {
-      "source": "zofia",
-      "target": "juggling_club",
-      "type": "membership"
-    },
-    {
-      "source": "sparrow",
-      "target": "gunn",
+      "source": "yuhang",
+      "target": "yoyo",
       "type": "membership"
     },
     {
@@ -1341,13 +1101,178 @@
       "type": "membership"
     },
     {
+      "source": "will",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "bihuh",
+      "target": "gunn",
+      "type": "membership"
+    },
+    {
       "source": "vish",
-      "target": "soosh",
+      "target": "yash",
       "type": "introduction"
+    },
+    {
+      "source": "anabelle",
+      "target": "victor",
+      "type": "introduction"
+    },
+    {
+      "source": "tristan",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "saidy",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "aster",
+      "target": "winter_2026",
+      "type": "membership"
+    },
+    {
+      "source": "jason",
+      "target": "origami",
+      "type": "membership"
+    },
+    {
+      "source": "noel",
+      "target": "sicada",
+      "type": "introduction"
+    },
+    {
+      "source": "alexander",
+      "target": "winter_2026",
+      "type": "membership"
+    },
+    {
+      "source": "aksheta",
+      "target": "tanisha",
+      "type": "introduction"
+    },
+    {
+      "source": "jayden",
+      "target": "dsc_148",
+      "type": "membership"
+    },
+    {
+      "source": "nick",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "diana",
+      "target": "winter_2026",
+      "type": "membership"
+    },
+    {
+      "source": "mattin",
+      "target": "winter_2026",
+      "type": "membership"
     },
     {
       "source": "isaac",
       "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "noel",
+      "target": "jaylin",
+      "type": "introduction"
+    },
+    {
+      "source": "areli",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "tony",
+      "target": "alva",
+      "type": "introduction"
+    },
+    {
+      "source": "aksheta",
+      "target": "alvin",
+      "type": "introduction"
+    },
+    {
+      "source": "ryan",
+      "target": "winter_2026",
+      "type": "membership"
+    },
+    {
+      "source": "evan",
+      "target": "winter_2026",
+      "type": "membership"
+    },
+    {
+      "source": "jade",
+      "target": "winter_2026",
+      "type": "membership"
+    },
+    {
+      "source": "elvin",
+      "target": "jerald",
+      "type": "introduction"
+    },
+    {
+      "source": "madilyn",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "tony",
+      "target": "yoyo",
+      "type": "membership"
+    },
+    {
+      "source": "brian",
+      "target": "dsc_148",
+      "type": "membership"
+    },
+    {
+      "source": "sharvari",
+      "target": "aikyam",
+      "type": "membership"
+    },
+    {
+      "source": "dave",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "ashley_mateo",
+      "target": "gunn",
+      "type": "membership"
+    },
+    {
+      "source": "jen",
+      "target": "jen",
+      "type": "introduction"
+    },
+    {
+      "source": "angel",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "norman",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "victor",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "rudd",
+      "target": "dsc_148",
       "type": "membership"
     },
     {
@@ -1356,17 +1281,92 @@
       "type": "introduction"
     },
     {
-      "source": "jen",
-      "target": "chaz",
-      "type": "introduction"
+      "source": "josh",
+      "target": "juggling_club",
+      "type": "membership"
     },
     {
-      "source": "carson",
+      "source": "sophia",
+      "target": "gunn",
+      "type": "membership"
+    },
+    {
+      "source": "v",
       "target": "winter_2026",
       "type": "membership"
     },
     {
-      "source": "josh",
+      "source": "pranav",
+      "target": "aikyam",
+      "type": "membership"
+    },
+    {
+      "source": "aidan",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "alice",
+      "target": "winter_2026",
+      "type": "membership"
+    },
+    {
+      "source": "shu_wen",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "ana",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "vish",
+      "target": "ojash",
+      "type": "introduction"
+    },
+    {
+      "source": "aksheta",
+      "target": "chris",
+      "type": "introduction"
+    },
+    {
+      "source": "zora",
+      "target": "winter_2026",
+      "type": "membership"
+    },
+    {
+      "source": "tony",
+      "target": "michael",
+      "type": "introduction"
+    },
+    {
+      "source": "sylvia",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "hanlin",
+      "target": "board_games_club",
+      "type": "membership"
+    },
+    {
+      "source": "kai",
+      "target": "juggling_club",
+      "type": "membership"
+    },
+    {
+      "source": "aksheta",
+      "target": "clarissa",
+      "type": "introduction"
+    },
+    {
+      "source": "alex",
+      "target": "willo",
+      "type": "introduction"
+    },
+    {
+      "source": "emily",
       "target": "juggling_club",
       "type": "membership"
     }

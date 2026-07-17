@@ -2,6 +2,7 @@
 import json
 import re
 import sys
+import os
 from pathlib import Path
 
 # Known hobbies or activities that shouldn't be parsed as person nodes
@@ -452,8 +453,9 @@ def parse_notes(file_path):
     }
 
 def main():
-    input_file = "sample_notes.txt"
-    output_file = "graph_data.json"
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    input_file = os.path.join(script_dir, "sample_notes.txt")
+    output_file = os.path.join(script_dir, "graph_data.json")
     
     if len(sys.argv) > 1:
         input_file = sys.argv[1]
