@@ -29,3 +29,11 @@ CREATE INDEX idx_nodes_type ON nodes(type);
 CREATE INDEX idx_edges_source ON edges(source);
 CREATE INDEX idx_edges_target ON edges(target);
 CREATE INDEX idx_edges_type ON edges(type);
+
+-- Sync tracking table: records each successful Google Keep pull
+CREATE TABLE IF NOT EXISTS sync_metadata (
+    id                   SERIAL PRIMARY KEY,
+    last_successful_sync TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_sync_metadata_ts ON sync_metadata (last_successful_sync DESC);

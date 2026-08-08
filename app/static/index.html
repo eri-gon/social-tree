@@ -1,70 +1,271 @@
-<!-- static/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal CRM - Social Graph</title>
-    <!-- Outfit Google Font -->
+    <title>Social Graph – Personal CRM & Keep Notes</title>
+    <meta name="description" content="Personal social graph CRM and Google Keep-style notes interface for tracking people and social contexts.">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/styles.css">
-    <!-- D3.js Library -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
+    <!-- Demo Mode Banner -->
+    <div id="demo-banner">
+        👀 Demo mode — edits are local only and won't be saved on refresh.
+    </div>
+
+    <!-- Top Navigation Header -->
+    <header id="top-navbar">
+        <div class="nav-brand">
+            <span class="brand-title">Social Tree</span>
+        </div>
+        <div class="nav-tabs">
+            <button id="tab-btn-notes" class="tab-btn active">📝 Notes</button>
+            <button id="tab-btn-graph" class="tab-btn">🕸 Graph</button>
+        </div>
+        <div class="nav-right">
+            <!-- Search notes or graph -->
+        </div>
+    </header>
+
     <div id="app-container">
-        <!-- Floating Glassmorphic Control Panel -->
-        <header class="glass-panel" id="control-panel">
-            <h1>Social Graph</h1>
-            <p class="subtitle">Personal CRM Network Visualization</p>
-
-            <div class="control-group">
-                <label for="search-input">Search Contact</label>
-                <input type="text" id="search-input" placeholder="Type a name to search..." autocomplete="off">
+        <!-- ── VIEW 1: NOTES (Google Keep Style) ────────────────────────────── -->
+        <main id="notes-view" class="view-panel active">
+            <!-- Quick Add / Take Note Bar -->
+            <div id="take-note-container">
+                <div id="take-note-bar" class="glass-panel">
+                    <div id="take-note-collapsed">
+                        <input type="text" id="quick-note-placeholder" placeholder="Take a note…" readonly>
+                    </div>
+                    <div id="take-note-expanded" style="display: none;">
+                        <input type="text" id="quick-note-title" placeholder="Title (Context e.g. Juggling Club)" autocomplete="off">
+                        <textarea id="quick-note-content" placeholder="Take a note… (e.g. Jules, Noel -> Isaac)" rows="3"></textarea>
+                        
+                        <div class="note-bar-footer">
+                            <div class="color-picker" id="quick-color-picker">
+                                <span class="color-dot active" data-color="default" style="background:#1e293b;"></span>
+                                <span class="color-dot" data-color="red" style="background:#7f1d1d;"></span>
+                                <span class="color-dot" data-color="orange" style="background:#7c2d12;"></span>
+                                <span class="color-dot" data-color="yellow" style="background:#713f12;"></span>
+                                <span class="color-dot" data-color="green" style="background:#14532d;"></span>
+                                <span class="color-dot" data-color="teal" style="background:#134e4a;"></span>
+                                <span class="color-dot" data-color="blue" style="background:#1e3a8a;"></span>
+                                <span class="color-dot" data-color="purple" style="background:#581c87;"></span>
+                            </div>
+                            <div class="note-bar-actions">
+                                <button id="quick-note-close-btn" class="btn-secondary btn-small">Close</button>
+                                <button id="quick-note-save-btn" class="btn-small">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="control-group">
-                <h3>Edge Filters</h3>
-                <label class="checkbox-container">
-                    <input type="checkbox" id="filter-membership" checked>
-                    <span class="checkmark"></span> Membership (dashed)
-                </label>
-                <label class="checkbox-container">
-                    <input type="checkbox" id="filter-introduction" checked>
-                    <span class="checkmark"></span> Introduction (solid)
-                </label>
+            <!-- Search & Filter Notes -->
+            <div class="notes-search-wrapper">
+                <input type="text" id="search-notes-input" placeholder="Search notes by title or content…" autocomplete="off">
             </div>
 
-            <div class="control-group">
-                <h3>Legend</h3>
-                <div class="legend-item"><span class="legend-dot group-node"></span> Group Context</div>
-                <div class="legend-item"><span class="legend-dot person-node"></span> Person Node</div>
+            <!-- Notes Grid (Keep Masonry Layout) -->
+            <div id="notes-grid">
+                <!-- Dynamically populated -->
             </div>
+        </main>
+
+        <!-- ── VIEW 2: GRAPH (D3 Force Directed) ────────────────────────────── -->
+        <main id="graph-view" class="view-panel">
+            <!-- Control Panel Floating -->
+            <aside class="glass-panel" id="control-panel">
+                <h2>Graph Filters</h2>
+
+                <!-- Search -->
+                <div class="control-group">
+                    <label for="search-input">Search Contact</label>
+                    <input type="text" id="search-input" placeholder="Type a name to search…" autocomplete="off">
+                </div>
+
+                <!-- Add Actions -->
+                <div class="control-group">
+                    <h3>Direct Add</h3>
+                    <div class="crud-buttons">
+                        <button id="btn-add-person">＋ Add Person</button>
+                        <button id="btn-add-group" class="btn-secondary">＋ Add Group</button>
+                        <button id="btn-add-connection" class="btn-secondary">⟷ Add Connection</button>
+                    </div>
+                </div>
+
+                <!-- Edge Filters -->
+                <div class="control-group">
+                    <h3>Edge Filters</h3>
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="filter-membership" checked>
+                        <span class="checkmark"></span> Membership (dashed)
+                    </label>
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="filter-introduction" checked>
+                        <span class="checkmark"></span> Introduction (solid)
+                    </label>
+                </div>
+
+                <!-- Legend -->
+                <div class="control-group">
+                    <h3>Legend</h3>
+                    <div class="legend-item"><span class="legend-dot group-node"></span> Group Context</div>
+                    <div class="legend-item"><span class="legend-dot person-node"></span> Person Node</div>
+                </div>
+
+                <button id="reset-button" class="btn-secondary">↺ Reset Layout</button>
+            </aside>
+
+            <!-- D3 Canvas -->
+            <div id="canvas-container">
+                <svg id="graph-svg"></svg>
+            </div>
+
+            <!-- Node Detail Card -->
+            <div class="glass-panel" id="detail-card" style="display: none;">
+                <button id="close-card-btn">×</button>
+                <h2 id="card-name">Name</h2>
+                <div id="card-type-badge">Type</div>
+                <div class="card-section">
+                    <strong>Hobbies / Metadata:</strong>
+                    <div id="card-metadata" class="tags-container">None</div>
+                </div>
+                <div class="card-section">
+                    <strong>Social Contexts:</strong>
+                    <div id="card-contexts" class="tags-container">None</div>
+                </div>
+                <div class="card-actions">
+                    <button id="card-edit-btn">✏️ Edit</button>
+                    <button id="card-delete-btn" class="btn-danger">🗑 Delete</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ── MODALS ───────────────────────────────────────────────────────────── -->
+    <div id="modal-overlay">
+        <!-- 1. Note Editor Modal -->
+        <div id="note-modal-box" class="modal-box" style="display:none;">
+            <button class="modal-close-btn" id="note-modal-close-btn">×</button>
+            <input type="text" id="note-modal-title" placeholder="Title (e.g. Juggling Club)" autocomplete="off">
+            <textarea id="note-modal-content" placeholder="Note content…" rows="8"></textarea>
             
-            <button id="reset-button">Reset Layout</button>
-        </header>
+            <!-- Syntax Cheatsheet Toggle Button -->
+            <div class="syntax-cheatsheet-bar">
+                <button type="button" id="syntax-guide-toggle-btn" class="btn-secondary btn-small">
+                    ❓ Syntax Guide
+                </button>
+            </div>
 
-        <!-- SVG Container for D3 Canvas -->
-        <div id="canvas-container">
-            <svg id="graph-svg"></svg>
+            <!-- Collapsible Syntax Cheatsheet Panel -->
+            <div id="syntax-guide-panel" style="display:none;">
+                <h4>Parser Syntax Cheatsheet</h4>
+                <table class="syntax-table">
+                    <thead>
+                        <tr><th>Pattern</th><th>Effect</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>Group Name:</code></td><td>Creates group context header</td></tr>
+                        <tr><td><code>Name</code></td><td>Adds person to current group</td></tr>
+                        <tr><td><code>Name (detail)</code></td><td>Adds parenthetical metadata tag</td></tr>
+                        <tr><td><code>Alice, Bob</code> or <code>Alice + Bob</code></td><td>Multiple people on one line</td></tr>
+                        <tr><td><code>Alice -> Bob</code></td><td>Alice introduced Bob (introduction edge)</td></tr>
+                        <tr><td><code>-> Bob</code></td><td>Previous person introduced Bob (implicit chain)</td></tr>
+                        <tr><td><code>Alice -> hobby</code></td><td>Adds hobby metadata (e.g. <code>dragon boat</code>)</td></tr>
+                        <tr><td><code>Alice -> roommate (Clara)</code></td><td>Relationship term inversion</td></tr>
+                        <tr><td><code>---</code></td><td>Resets context (section divider)</td></tr>
+                        <tr><td><code>Line ending in ! or ?</code></td><td>Ignored as noise/note</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="note-modal-footer">
+                <div class="color-picker" id="modal-color-picker">
+                    <span class="color-dot active" data-color="default" style="background:#1e293b;"></span>
+                    <span class="color-dot" data-color="red" style="background:#7f1d1d;"></span>
+                    <span class="color-dot" data-color="orange" style="background:#7c2d12;"></span>
+                    <span class="color-dot" data-color="yellow" style="background:#713f12;"></span>
+                    <span class="color-dot" data-color="green" style="background:#14532d;"></span>
+                    <span class="color-dot" data-color="teal" style="background:#134e4a;"></span>
+                    <span class="color-dot" data-color="blue" style="background:#1e3a8a;"></span>
+                    <span class="color-dot" data-color="purple" style="background:#581c87;"></span>
+                </div>
+                <div class="modal-actions">
+                    <button id="note-modal-delete-btn" class="btn-danger btn-small" style="display:none;">🗑 Delete</button>
+                    <button id="note-modal-cancel-btn" class="btn-secondary btn-small">Cancel</button>
+                    <button id="note-modal-save-btn" class="btn-small">Save</button>
+                </div>
+            </div>
         </div>
 
-        <!-- Translucent Detail Tooltip Card -->
-        <div class="glass-panel" id="detail-card" style="display: none;">
-            <button id="close-card-btn">&times;</button>
-            <h2 id="card-name">Name</h2>
-            <div id="card-type-badge">Type</div>
-            <div class="card-section">
-                <strong>Metadata/Hobbies:</strong>
-                <div id="card-metadata" class="tags-container">None</div>
+        <!-- 2. Direct Node / Edge Modal (Legacy/Graph view direct actions) -->
+        <div id="direct-modal-box" class="modal-box" style="display:none;">
+            <button class="modal-close-btn" id="direct-modal-close-btn">×</button>
+            <h2 id="modal-title">Add Person</h2>
+
+            <!-- Node form -->
+            <div id="node-form">
+                <div class="modal-field">
+                    <label for="modal-name">Name *</label>
+                    <input type="text" id="modal-name" placeholder="e.g. Jane Smith">
+                </div>
+                <div class="modal-field" id="modal-type-field">
+                    <label for="modal-type">Type</label>
+                    <select id="modal-type">
+                        <option value="person">Person</option>
+                        <option value="group">Group</option>
+                    </select>
+                </div>
+                <div class="modal-field">
+                    <label for="modal-metadata">Hobbies / Tags</label>
+                    <input type="text" id="modal-metadata" placeholder="hiking, chess, cooking">
+                    <p class="modal-hint">Comma-separated list</p>
+                </div>
+                <div class="modal-field">
+                    <label for="modal-contexts">Social Contexts</label>
+                    <input type="text" id="modal-contexts" placeholder="work, hiking club">
+                    <p class="modal-hint">Comma-separated list</p>
+                </div>
+                <div class="modal-actions">
+                    <button id="modal-cancel-btn" class="btn-secondary">Cancel</button>
+                    <button id="modal-save-btn">Save</button>
+                </div>
             </div>
-            <div class="card-section">
-                <strong>Social Contexts:</strong>
-                <div id="card-contexts" class="tags-container">None</div>
+
+            <!-- Edge / Connection form -->
+            <div id="edge-form" style="display:none;">
+                <div class="modal-field">
+                    <label for="edge-source">From (source node)</label>
+                    <select id="edge-source"></select>
+                </div>
+                <div class="modal-field">
+                    <label for="edge-target">To (target node)</label>
+                    <select id="edge-target"></select>
+                </div>
+                <div class="modal-field">
+                    <label for="edge-type">Connection Type</label>
+                    <select id="edge-type">
+                        <option value="introduction">Introduction</option>
+                        <option value="membership">Membership</option>
+                    </select>
+                </div>
+                <div class="modal-field">
+                    <label for="edge-context">Context (optional)</label>
+                    <input type="text" id="edge-context" placeholder="e.g. hiking club">
+                </div>
+                <div class="modal-actions">
+                    <button id="edge-cancel-btn" class="btn-secondary">Cancel</button>
+                    <button id="edge-save-btn">Add Connection</button>
+                </div>
             </div>
         </div>
     </div>
-    
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
     <script src="/static/app.js"></script>
 </body>
 </html>

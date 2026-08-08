@@ -1,0 +1,25 @@
+# render.yaml
+# Render Blueprint — deploy to Render.com from GitHub
+# Docs: https://render.com/docs/blueprint-spec
+#
+# SETUP:
+#  1. Create a free account at neon.tech → new project → copy the DATABASE_URL.
+#  2. Push this repo to GitHub.
+#  3. On render.com, click "New Blueprint" and connect this repo.
+#  4. In the Render dashboard for the service, set these env vars:
+#       DATABASE_URL   = (paste from Neon)
+#       OWNER_SECRET   = (your chosen secret token for write access)
+
+services:
+  - type: web
+    name: social-tree
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    envVars:
+      - key: DATABASE_URL
+        sync: false        # You paste this manually in the Render dashboard
+      - key: OWNER_SECRET
+        sync: false        # You paste this manually in the Render dashboard
+    healthCheckPath: /api/graph
+    autoDeploy: true       # Re-deploys on every git push to main

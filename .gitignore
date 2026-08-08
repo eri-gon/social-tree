@@ -1,1 +1,11 @@
 .DS_Store
+
+# Never commit credentials
+.env
+
+# Python virtual environments
+venv/
+env/
+.venv/
+__pycache__/
+*.pyc

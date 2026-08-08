@@ -19,7 +19,7 @@ def normalize_id(name):
     clean = re.sub(r'[^a-z0-9_]', '', clean)
     return clean
 
-def parse_node_string(node_str):
+def parse_node_string(node_str, overall_context=None):
     """Parse a single node string into id, name, and metadata list."""
     node_str = node_str.strip()
     if not node_str:
@@ -72,7 +72,20 @@ def parse_node_string(node_str):
             metadata.append(hobby)
             
     # Generate clean ID
-    node_id = normalize_id(clean_name)
+    if overall_context:
+        disambiguator = normalize_id(overall_context)
+        if parentheticals:
+            internal_disambig = normalize_id(parentheticals[0])
+            node_id = normalize_id(clean_name + "_" + internal_disambig + "_" + disambiguator)
+        else:
+            node_id = normalize_id(clean_name + "_" + disambiguator)
+    else:
+        if parentheticals:
+            internal_disambig = normalize_id(parentheticals[0])
+            node_id = normalize_id(clean_name + "_" + internal_disambig)
+        else:
+            node_id = normalize_id(clean_name)
+            
     if not node_id:
         return None
         
@@ -87,7 +100,7 @@ def parse_node_string(node_str):
         "metadata": metadata
     }
 
-def extract_entities_from_string(s, is_edge_target=False):
+def extract_entities_from_string(s, is_edge_target=False, overall_context=None):
     """Split a string by delimiters and parse individual entities."""
     s = s.strip()
     if not s:
@@ -120,7 +133,7 @@ def extract_entities_from_string(s, is_edge_target=False):
                 i += 1
             
             for subpart in recombined:
-                parsed = parse_node_string(subpart)
+                parsed = parse_node_string(subpart, overall_context=overall_context)
                 if parsed:
                     results.append(parsed)
         else:
@@ -131,11 +144,11 @@ def extract_entities_from_string(s, is_edge_target=False):
                 part1 = f"{words[0]} {words[1]}"
                 part2 = f"{words[2]} {words[3]}"
                 for subpart in [part1, part2]:
-                    parsed = parse_node_string(subpart)
+                    parsed = parse_node_string(subpart, overall_context=overall_context)
                     if parsed:
                         results.append(parsed)
             else:
-                parsed = parse_node_string(part)
+                parsed = parse_node_string(part, overall_context=overall_context)
                 if parsed:
                     results.append(parsed)
                     
@@ -157,13 +170,22 @@ def is_context_header(line):
     return False
 
 def clean_context_name(line):
-    """Extract and clean the context/group name from a header line."""
+    """Extract and clean the context/group name and any parenthetical metadata from a header line.
+    
+    Returns (name: str, metadata: list[str]).
+    """
     line = line.strip()
     if line.lower().endswith('#name'):
         line = line[:-5].strip()
     elif line.endswith(':'):
         line = line[:-1].strip()
-    return line
+
+    # Extract parenthetical metadata from the header, e.g. "aikyam (chicken dinner)"
+    parentheticals = re.findall(r'\(([^)]+)\)', line)
+    clean_name = re.sub(r'\([^)]+\)', '', line).strip()
+    metadata = [p.strip() for p in parentheticals if p.strip()]
+
+    return clean_name, metadata
 
 def is_noise_line(line):
     """Determine if a line is a note, task, or placeholder that should be ignored."""
@@ -232,30 +254,35 @@ def parse_notes(file_path):
         # Handle inline context header (e.g., "gunn: sophia")
         if ':' in line_clean and not line_clean.endswith(':'):
             parts = line_clean.split(':', 1)
-            context_name = parts[0].strip()
+            raw_header = parts[0].strip()
             line_clean = parts[1].strip()
-            
+
+            context_name, group_meta = clean_context_name(raw_header + ':')
             current_context = context_name
             last_sources = []
-            
+
             group_id = normalize_id(context_name)
             if group_id not in nodes_dict:
                 nodes_dict[group_id] = {
                     "id": group_id,
                     "name": context_name,
                     "type": "group",
-                    "metadata": [],
+                    "metadata": group_meta,
                     "contexts": []
                 }
+            else:
+                for m in group_meta:
+                    if m not in nodes_dict[group_id]["metadata"]:
+                        nodes_dict[group_id]["metadata"].append(m)
             if not line_clean:
                 continue
             
         # Check if line is a context header
         if is_context_header(line_clean):
-            context_name = clean_context_name(line_clean)
+            context_name, group_meta = clean_context_name(line_clean)
             current_context = context_name
             last_sources = []
-            
+
             # Add the context group itself as a group node
             group_id = normalize_id(context_name)
             if group_id not in nodes_dict:
@@ -263,9 +290,13 @@ def parse_notes(file_path):
                     "id": group_id,
                     "name": context_name,
                     "type": "group",
-                    "metadata": [],
+                    "metadata": group_meta,
                     "contexts": []
                 }
+            else:
+                for m in group_meta:
+                    if m not in nodes_dict[group_id]["metadata"]:
+                        nodes_dict[group_id]["metadata"].append(m)
             continue
             
         # Parse edge: check if line is an explicit or implicit introduction edge
@@ -451,6 +482,217 @@ def parse_notes(file_path):
         "nodes": nodes_list,
         "edges": edges_list
     }
+
+def parse_notes_text(text: str, overall_context: str = None) -> dict:
+    """
+    Parse a raw multi-line notes string and return { nodes, edges }.
+
+    Accepts the notes content as a plain string instead of a file path.
+    Used by the sync engine to process Google Keep note text that has
+    been fetched directly from the API, without writing anything to disk.
+
+    The parsing logic is identical to parse_notes() — we simply split the
+    string into lines and feed them through the same internal loop.
+    """
+    import io
+    # Wrap text in a StringIO so we can reuse parse_notes() machinery cleanly
+    # by passing lines directly to the same loop via a thin re-implementation.
+    nodes_dict = {}
+    edges_set = set()
+    current_context = None
+    last_sources = []
+
+    for line in text.splitlines():
+        line_clean = line.strip()
+        if not line_clean:
+            continue
+        if is_noise_line(line_clean):
+            continue
+        if re.match(r'^---+$', line_clean):
+            current_context = None
+            last_sources = []
+            continue
+        if ':' in line_clean and not line_clean.endswith(':'):
+            parts = line_clean.split(':', 1)
+            raw_header = parts[0].strip()
+            line_clean = parts[1].strip()
+            context_name, group_meta = clean_context_name(raw_header + ':')
+            current_context = context_name
+            last_sources = []
+            group_id = normalize_id(context_name)
+            if group_id not in nodes_dict:
+                nodes_dict[group_id] = {"id": group_id, "name": context_name,
+                                        "type": "group", "metadata": group_meta, "contexts": []}
+            else:
+                for m in group_meta:
+                    if m not in nodes_dict[group_id]["metadata"]:
+                        nodes_dict[group_id]["metadata"].append(m)
+            if not line_clean:
+                continue
+        if is_context_header(line_clean):
+            context_name, group_meta = clean_context_name(line_clean)
+            current_context = context_name
+            last_sources = []
+            group_id = normalize_id(context_name)
+            if group_id not in nodes_dict:
+                nodes_dict[group_id] = {"id": group_id, "name": context_name,
+                                        "type": "group", "metadata": group_meta, "contexts": []}
+            else:
+                for m in group_meta:
+                    if m not in nodes_dict[group_id]["metadata"]:
+                        nodes_dict[group_id]["metadata"].append(m)
+            continue
+        edge_match = re.search(r'^(.+?)\s*--?\s*>\s*(.+)$', line_clean)
+        implicit_match = re.search(r'^\s*--?\s*>\s*(.+)$', line_clean)
+        is_hobby_edge = False
+        hobby_name = None
+        if edge_match:
+            tc = edge_match.group(2).strip().lower()
+            if tc in HOBBIES:
+                is_hobby_edge, hobby_name = True, tc
+        elif implicit_match:
+            tc = implicit_match.group(1).strip().lower()
+            if tc in HOBBIES:
+                is_hobby_edge, hobby_name = True, tc
+        if is_hobby_edge:
+            if edge_match:
+                sources = extract_entities_from_string(edge_match.group(1), is_edge_target=False, overall_context=overall_context)
+                for s in sources:
+                    sid = s["id"]
+                    if sid not in nodes_dict:
+                        nodes_dict[sid] = {"id": sid, "name": s["name"], "type": "person",
+                                           "metadata": s["metadata"],
+                                           "contexts": [current_context] if current_context else []}
+                    if hobby_name not in nodes_dict[sid]["metadata"]:
+                        nodes_dict[sid]["metadata"].append(hobby_name)
+                    if current_context and current_context not in nodes_dict[sid]["contexts"]:
+                        nodes_dict[sid]["contexts"].append(current_context)
+                last_sources = sources
+            elif implicit_match:
+                for s in last_sources:
+                    sid = s["id"]
+                    if sid in nodes_dict and hobby_name not in nodes_dict[sid]["metadata"]:
+                        nodes_dict[sid]["metadata"].append(hobby_name)
+            continue
+        if implicit_match:
+            targets = extract_entities_from_string(implicit_match.group(1), is_edge_target=True, overall_context=overall_context)
+            if not last_sources:
+                for t in targets:
+                    tid = t["id"]
+                    if tid not in nodes_dict:
+                        nodes_dict[tid] = {"id": tid, "name": t["name"], "type": "person",
+                                           "metadata": t["metadata"],
+                                           "contexts": [current_context] if current_context else []}
+                    else:
+                        for m in t["metadata"]:
+                            if m not in nodes_dict[tid]["metadata"]:
+                                nodes_dict[tid]["metadata"].append(m)
+                        if current_context and current_context not in nodes_dict[tid]["contexts"]:
+                            nodes_dict[tid]["contexts"].append(current_context)
+            else:
+                for s in last_sources:
+                    for t in targets:
+                        tid = t["id"]
+                        if tid not in nodes_dict:
+                            nodes_dict[tid] = {"id": tid, "name": t["name"], "type": "person",
+                                               "metadata": t["metadata"],
+                                               "contexts": [current_context] if current_context else []}
+                        else:
+                            for m in t["metadata"]:
+                                if m not in nodes_dict[tid]["metadata"]:
+                                    nodes_dict[tid]["metadata"].append(m)
+                            if current_context and current_context not in nodes_dict[tid]["contexts"]:
+                                nodes_dict[tid]["contexts"].append(current_context)
+                        edges_set.add((s["id"], tid, "introduction"))
+            continue
+        elif edge_match:
+            sources = extract_entities_from_string(edge_match.group(1), is_edge_target=False, overall_context=overall_context)
+            targets = extract_entities_from_string(edge_match.group(2), is_edge_target=True, overall_context=overall_context)
+            for s in sources:
+                sid = s["id"]
+                if sid not in nodes_dict:
+                    nodes_dict[sid] = {"id": sid, "name": s["name"], "type": "person",
+                                       "metadata": s["metadata"],
+                                       "contexts": [current_context] if current_context else []}
+                else:
+                    for m in s["metadata"]:
+                        if m not in nodes_dict[sid]["metadata"]:
+                            nodes_dict[sid]["metadata"].append(m)
+                    if current_context and current_context not in nodes_dict[sid]["contexts"]:
+                        nodes_dict[sid]["contexts"].append(current_context)
+            for s in sources:
+                for t in targets:
+                    tid = t["id"]
+                    if tid not in nodes_dict:
+                        nodes_dict[tid] = {"id": tid, "name": t["name"], "type": "person",
+                                           "metadata": t["metadata"],
+                                           "contexts": [current_context] if current_context else []}
+                    else:
+                        for m in t["metadata"]:
+                            if m not in nodes_dict[tid]["metadata"]:
+                                nodes_dict[tid]["metadata"].append(m)
+                        if current_context and current_context not in nodes_dict[tid]["contexts"]:
+                            nodes_dict[tid]["contexts"].append(current_context)
+                    edges_set.add((s["id"], tid, "introduction"))
+            last_sources = sources
+            continue
+        parsed_nodes = extract_entities_from_string(line_clean, is_edge_target=False, overall_context=overall_context)
+        for node in parsed_nodes:
+            nid = node["id"]
+            if nid not in nodes_dict:
+                nodes_dict[nid] = {"id": nid, "name": node["name"], "type": "person",
+                                   "metadata": node["metadata"],
+                                   "contexts": [current_context] if current_context else []}
+            else:
+                for m in node["metadata"]:
+                    if m not in nodes_dict[nid]["metadata"]:
+                        nodes_dict[nid]["metadata"].append(m)
+                if current_context and current_context not in nodes_dict[nid]["contexts"]:
+                    nodes_dict[nid]["contexts"].append(current_context)
+            if current_context:
+                edges_set.add((nid, normalize_id(current_context), "membership"))
+
+    nodes_list = list(nodes_dict.values())
+    edges_list = [{"source": src, "target": tgt, "type": et} for src, tgt, et in edges_set]
+
+    # ── Post-process to apply overall note context ─────────────────────────────
+    if overall_context:
+        overall_context = overall_context.strip()
+        overall_group_id = normalize_id(overall_context)
+        
+        # Ensure overall context group node is registered
+        has_group = any(n["id"] == overall_group_id for n in nodes_list)
+        if not has_group:
+            nodes_list.append({
+                "id": overall_group_id,
+                "name": overall_context,
+                "type": "group",
+                "metadata": [],
+                "contexts": []
+            })
+            
+        # Associate all person nodes in this note with the overall context
+        for node in nodes_list:
+            if node["type"] == "person" and node["id"] != overall_group_id:
+                if overall_context not in node["contexts"]:
+                    node["contexts"].append(overall_context)
+                
+                # Check for existing membership edge
+                has_edge = any(
+                    e["source"] == node["id"] and 
+                    e["target"] == overall_group_id and 
+                    e["type"] == "membership"
+                    for e in edges_list
+                )
+                if not has_edge:
+                    edges_list.append({
+                        "source": node["id"],
+                        "target": overall_group_id,
+                        "type": "membership"
+                    })
+
+    return {"nodes": nodes_list, "edges": edges_list}
+
 
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
