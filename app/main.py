@@ -181,6 +181,10 @@ def rebuild_graph_from_notes(conn):
 def read_root():
     return FileResponse(os.path.join(static_dir, "index.html"))
 
+@app.get("/favicon.ico")
+def get_favicon():
+    return FileResponse(os.path.join(static_dir, "favicon.svg"), media_type="image/svg+xml")
+
 @app.api_route("/api/graph", methods=["GET", "HEAD"])
 def get_graph_data():
     nodes = []
