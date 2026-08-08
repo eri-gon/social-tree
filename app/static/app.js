@@ -257,40 +257,101 @@ document.addEventListener("DOMContentLoaded", () => {
 
     searchNotesInput.addEventListener("input", renderNotesGrid);
 
-    // Save/Update Note Logic
+    // ── Sync Status Badge Controller ──────────────────────────────────────────
+    const syncStatusBadge = document.getElementById("sync-status-badge");
+    const syncStatusText = document.getElementById("sync-status-text");
+
+    function updateSyncStatus(state, msg = "") {
+        if (!syncStatusBadge || !syncStatusText) return;
+        syncStatusBadge.className = "sync-badge " + state;
+        if (state === "synced") {
+            syncStatusText.textContent = msg || "Synced";
+        } else if (state === "syncing") {
+            syncStatusText.textContent = msg || "Syncing graph...";
+        } else if (state === "error") {
+            syncStatusText.textContent = msg || "Sync error (retry)";
+        }
+    }
+
+    if (syncStatusBadge) {
+        syncStatusBadge.addEventListener("click", () => {
+            if (syncStatusBadge.classList.contains("error")) {
+                updateSyncStatus("syncing", "Retrying sync...");
+                loadNotes().then(() => {
+                    refreshGraph();
+                    updateSyncStatus("synced", "Synced");
+                }).catch(() => {
+                    updateSyncStatus("error", "Sync error");
+                });
+            }
+        });
+    }
+
+    // Save/Update Note Logic (0ms Optimistic UI + Background Sync)
     async function handleSaveNote(noteData) {
+        // 1. Instant 0ms Optimistic UI Update
+        const tempId = "temp-" + Date.now();
+        const optimisticNote = {
+            id: tempId,
+            ...noteData,
+            source: "manual",
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+        };
+        
+        allNotes.unshift(optimisticNote);
+        renderNotesGrid();
+
         if (!isOwner) {
-            // Demo Mode: store in-memory
-            const tempId = Date.now();
-            allNotes.unshift({ id: tempId, ...noteData, created_at: new Date().isoformat() });
-            renderNotesGrid();
-            showToast("✏️ Demo mode — note saved locally (won't persist).", "warn");
+            showToast("✏️ Demo mode — note saved locally.", "warn");
             return;
         }
 
+        // 2. Background Sync
+        updateSyncStatus("syncing", "Syncing graph...");
         try {
-            await apiCall("POST", "/api/notes", noteData);
-            showToast("✅ Note saved & graph updated!", "success");
-            await loadNotes();
+            const savedNote = await apiCall("POST", "/api/notes", noteData);
+            const idx = allNotes.findIndex(n => n.id === tempId);
+            if (idx !== -1) allNotes[idx] = savedNote;
+            renderNotesGrid();
+            refreshGraph();
+            updateSyncStatus("synced", "Synced");
+            showToast("✅ Note saved & graph synced!", "success");
         } catch (err) {
+            updateSyncStatus("error", "Sync error");
             showToast("❌ Save failed: " + err.message, "error");
         }
     }
 
     async function handleUpdateNote(noteId, updates) {
-        if (!isOwner) {
-            const note = allNotes.find(n => n.id === noteId);
-            if (note) Object.assign(note, updates);
+        // 1. Instant 0ms Optimistic UI Update
+        const noteIndex = allNotes.findIndex(n => n.id === noteId);
+        let backupNote = null;
+        if (noteIndex !== -1) {
+            backupNote = { ...allNotes[noteIndex] };
+            Object.assign(allNotes[noteIndex], updates, { updated_at: new Date().toISOString() });
             renderNotesGrid();
+        }
+
+        if (!isOwner) {
             showToast("✏️ Demo mode — changes won't persist.", "warn");
             return;
         }
 
+        // 2. Background Sync
+        updateSyncStatus("syncing", "Syncing graph...");
         try {
-            await apiCall("PUT", `/api/notes/${noteId}`, updates);
-            showToast("✅ Note updated!", "success");
-            await loadNotes();
+            const updated = await apiCall("PUT", `/api/notes/${noteId}`, updates);
+            if (noteIndex !== -1) allNotes[noteIndex] = updated;
+            renderNotesGrid();
+            refreshGraph();
+            updateSyncStatus("synced", "Synced");
         } catch (err) {
+            if (noteIndex !== -1 && backupNote) {
+                allNotes[noteIndex] = backupNote;
+                renderNotesGrid();
+            }
+            updateSyncStatus("error", "Sync error");
             showToast("❌ Update failed: " + err.message, "error");
         }
     }
@@ -298,20 +359,34 @@ document.addEventListener("DOMContentLoaded", () => {
     async function handleDeleteNote(noteId) {
         if (!confirm("Are you sure you want to delete this note?")) return;
 
-        if (!isOwner) {
-            allNotes = allNotes.filter(n => n.id !== noteId);
+        // 1. Instant 0ms Optimistic UI Update
+        const noteIndex = allNotes.findIndex(n => n.id === noteId);
+        let deletedNote = null;
+        if (noteIndex !== -1) {
+            deletedNote = allNotes[noteIndex];
+            allNotes.splice(noteIndex, 1);
             renderNotesGrid();
             closeModal();
+        }
+
+        if (!isOwner) {
             showToast("✏️ Demo mode — note deleted locally.", "warn");
             return;
         }
 
+        // 2. Background Sync
+        updateSyncStatus("syncing", "Syncing graph...");
         try {
             await apiCall("DELETE", `/api/notes/${noteId}`);
-            showToast("✅ Note deleted & graph updated!", "success");
-            closeModal();
-            await loadNotes();
+            refreshGraph();
+            updateSyncStatus("synced", "Synced");
+            showToast("✅ Note deleted & graph synced!", "success");
         } catch (err) {
+            if (deletedNote && noteIndex !== -1) {
+                allNotes.splice(noteIndex, 0, deletedNote);
+                renderNotesGrid();
+            }
+            updateSyncStatus("error", "Sync error");
             showToast("❌ Delete failed: " + err.message, "error");
         }
     }
