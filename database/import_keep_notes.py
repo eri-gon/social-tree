@@ -125,7 +125,10 @@ def rebuild_graph(conn):
     return len(nodes), len(edges)
 
 def import_notes():
-    conn = psycopg2.connect(**DB_CONFIG)
+    if DATABASE_URL:
+        conn = psycopg2.connect(dsn=DATABASE_URL)
+    else:
+        conn = psycopg2.connect(**DB_CONFIG)
     try:
         takeout_dir = os.environ.get("KEEP_TAKEOUT_DIR", "/Users/ericgan/Takeout/keep/").strip()
         json_files = []

@@ -27,30 +27,20 @@ app = FastAPI(title="Personal CRM Social Graph")
 
 # Database Configuration: prefer DATABASE_URL (cloud), fall back to local config
 DATABASE_URL = os.environ.get("DATABASE_URL", "").strip()
-
-if DATABASE_URL:
-    parsed = urlparse(DATABASE_URL)
-    DB_CONFIG = {
-        "host": parsed.hostname,
-        "port": parsed.port or 5432,
-        "user": parsed.username,
-        "password": parsed.password,
-        "database": parsed.path.lstrip("/"),
-        "sslmode": "require",
-    }
-else:
-    DB_CONFIG = {
-        "host": "localhost",
-        "port": 5432,
-        "user": "eric",
-        "password": "password123",
-        "database": "keep_social_graph",
-    }
-
 OWNER_SECRET = os.environ.get("OWNER_SECRET", "").strip()
 
 try:
-    db_pool = SimpleConnectionPool(1, 10, **DB_CONFIG)
+    if DATABASE_URL:
+        db_pool = SimpleConnectionPool(1, 10, dsn=DATABASE_URL)
+    else:
+        DB_CONFIG = {
+            "host": "localhost",
+            "port": 5432,
+            "user": "eric",
+            "password": "password123",
+            "database": "keep_social_graph",
+        }
+        db_pool = SimpleConnectionPool(1, 10, **DB_CONFIG)
 except Exception as e:
     print(f"Database connection pool creation failed: {e}")
     sys.exit(1)
