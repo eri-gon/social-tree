@@ -685,17 +685,117 @@ body.demo-mode #top-navbar { margin-top: 28px; }
 .highlighted text { fill: #ffffff !important; font-weight: 700 !important; font-size: 13px !important; }
 .dimmed { opacity: 0.15 !important; }
 
+/* Mobile Drawer Controls & FAB */
+#control-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.mobile-only-close-btn {
+    display: none;
+}
+
+.mobile-toggle-fab {
+    display: none;
+}
+
 /* Mobile Responsive */
-@media (max-width: 650px) {
-    #top-navbar { padding: 0 12px; }
-    .brand-title { font-size: 16px; }
-    #notes-view { padding: 12px; }
-    #notes-grid { grid-template-columns: 1fr; }
-    #control-panel {
-        top: auto !important;
-        bottom: 0; left: 0; right: 0; width: 100%;
-        border-radius: 20px 20px 0 0;
-        max-height: 50vh; padding: 16px;
+@media (max-width: 768px) {
+    #top-navbar {
+        padding: 0 10px;
+        height: 52px;
     }
-    #detail-card { bottom: auto; top: 10px; left: 10px; right: 10px; width: auto; }
+    .brand-title {
+        font-size: 15px;
+    }
+    .nav-tabs {
+        padding: 3px;
+        gap: 4px;
+    }
+    .tab-btn {
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+
+    #notes-view {
+        padding: 12px;
+    }
+    #notes-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .mobile-only-close-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--text-primary);
+        border: none;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    .mobile-toggle-fab {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 100;
+        background: var(--accent-color);
+        color: #ffffff;
+        border: none;
+        border-radius: 30px;
+        padding: 10px 18px;
+        font-size: 13px;
+        font-weight: 600;
+        box-shadow: 0 8px 24px rgba(59, 130, 246, 0.5);
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .mobile-toggle-fab:active {
+        transform: scale(0.95);
+    }
+
+    /* Collapsible Mobile Control Drawer */
+    #control-panel {
+        position: fixed !important;
+        top: auto !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-height: 80vh !important;
+        border-radius: 24px 24px 0 0 !important;
+        padding: 20px 16px !important;
+        transform: translateY(110%);
+        transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        z-index: 250 !important;
+        box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.7) !important;
+    }
+
+    #control-panel.mobile-open {
+        transform: translateY(0) !important;
+    }
+
+    #detail-card {
+        position: fixed !important;
+        top: 64px !important;
+        left: 12px !important;
+        right: 12px !important;
+        bottom: auto !important;
+        width: auto !important;
+        z-index: 200 !important;
+    }
+
+    .note-card-pin-btn, .note-card-trash-btn {
+        opacity: 0.6;
+    }
 }

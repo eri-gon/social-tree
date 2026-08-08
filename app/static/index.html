@@ -100,9 +100,17 @@
 
         <!-- ── VIEW 2: GRAPH (D3 Force Directed) ────────────────────────────── -->
         <main id="graph-view" class="view-panel">
+            <!-- Floating Mobile FAB Button -->
+            <button type="button" id="btn-mobile-toggle-controls" class="mobile-toggle-fab" title="Open Filters">
+                ⚙️ Filters & Search
+            </button>
+
             <!-- Control Panel Floating -->
             <aside class="glass-panel" id="control-panel">
-                <h2>Graph Filters</h2>
+                <div id="control-panel-header">
+                    <h2>Graph Filters</h2>
+                    <button type="button" id="btn-close-mobile-controls" class="mobile-only-close-btn" title="Close Filters">✕</button>
+                </div>
 
                 <!-- Search -->
                 <div class="control-group">

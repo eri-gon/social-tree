@@ -819,11 +819,42 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("btn-add-group").addEventListener("click", () => openNoteModal({ title: "Group Name:", content: "- Person 1\n- Person 2" }));
     document.getElementById("btn-add-connection").addEventListener("click", () => openNoteModal({ title: "Introductions", content: "Alice -> Bob" }));
 
+    // ── Mobile Control Drawer Logic ──────────────────────────────────────────
+    const mobileToggleFab = document.getElementById("btn-mobile-toggle-controls");
+    const mobileCloseBtn = document.getElementById("btn-close-mobile-controls");
+    const controlPanelEl = document.getElementById("control-panel");
+    const graphSvgEl = document.getElementById("graph-svg");
+
+    if (mobileToggleFab && controlPanelEl) {
+        mobileToggleFab.addEventListener("click", (e) => {
+            e.stopPropagation();
+            controlPanelEl.classList.add("mobile-open");
+        });
+    }
+
+    if (mobileCloseBtn && controlPanelEl) {
+        mobileCloseBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            controlPanelEl.classList.remove("mobile-open");
+        });
+    }
+
+    if (graphSvgEl && controlPanelEl) {
+        graphSvgEl.addEventListener("click", () => {
+            if (window.innerWidth <= 768 && controlPanelEl.classList.contains("mobile-open")) {
+                controlPanelEl.classList.remove("mobile-open");
+            }
+        });
+    }
+
     // ── Initial Load ─────────────────────────────────────────────────────────────
     loadNotes();
     refreshGraph();
 
     document.addEventListener("keydown", e => {
-        if (e.key === "Escape") closeModal();
+        if (e.key === "Escape") {
+            closeModal();
+            if (controlPanelEl) controlPanelEl.classList.remove("mobile-open");
+        }
     });
 });
