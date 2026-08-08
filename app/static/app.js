@@ -648,7 +648,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
             const matches = new Set();
-            nodeElements.each(d => { if (d.name.toLowerCase().includes(q)) matches.add(d.id); });
+            nodeElements.each(d => {
+                const nameMatch = d.name && d.name.toLowerCase().includes(q);
+                const typeMatch = d.type && d.type.toLowerCase().includes(q);
+                const metaMatch = d.metadata && d.metadata.some(m => m.toLowerCase().includes(q));
+                const ctxMatch = d.contexts && d.contexts.some(c => c.toLowerCase().includes(q));
+
+                if (nameMatch || typeMatch || metaMatch || ctxMatch) {
+                    matches.add(d.id);
+                }
+            });
             nodeElements.classed("highlighted", d => matches.has(d.id)).classed("dimmed", d => !matches.has(d.id));
             linkElements.classed("dimmed", true);
         });
