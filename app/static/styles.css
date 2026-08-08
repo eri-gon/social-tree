@@ -248,9 +248,31 @@ body {
     width: auto;
     opacity: 0.15;
     filter: grayscale(100%);
+    z-index: 2;
+}
+
+.note-card-trash-btn {
+    position: absolute;
+    top: 10px;
+    right: 34px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 4px;
+    border-radius: 50%;
+    transition: opacity 0.2s, transform 0.15s, color 0.2s;
+    width: auto;
+    opacity: 0;
+    color: var(--text-secondary);
+    z-index: 2;
 }
 
 .note-card:hover .note-card-pin-btn {
+    opacity: 0.6;
+}
+
+.note-card:hover .note-card-trash-btn {
     opacity: 0.6;
 }
 
@@ -259,9 +281,22 @@ body {
     transform: scale(1.2);
 }
 
+.note-card-trash-btn:hover {
+    opacity: 1 !important;
+    color: var(--color-danger) !important;
+    transform: scale(1.2);
+}
+
 .note-card-pin-btn.pinned {
     opacity: 1 !important;
     filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.9)) !important;
+}
+
+.shortcut-hint {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-left: 8px;
+    font-family: var(--font-stack);
 }
 
 .note-card-actions {

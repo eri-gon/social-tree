@@ -304,6 +304,35 @@ def update_note(note_id: int, update: NoteUpdate):
         "updated_at": row[7].isoformat() if row[7] else None,
     }
 
+def remove_node_name_from_notes(conn, node_id: str):
+    import re
+    with conn.cursor() as cur:
+        cur.execute("SELECT name FROM nodes WHERE id = %s;", (node_id,))
+        row = cur.fetchone()
+        if not row:
+            return
+        node_name = row[0].strip()
+        if not node_name:
+            return
+
+        cur.execute("SELECT id, title, content FROM notes;")
+        notes = cur.fetchall()
+
+        for nid, title, content in notes:
+            lines = content.splitlines()
+            new_lines = []
+            changed = False
+            for line in lines:
+                if re.search(r'\b' + re.escape(node_name) + r'\b', line, flags=re.IGNORECASE):
+                    changed = True
+                    continue
+                new_lines.append(line)
+
+            if changed:
+                new_content = "\n".join(new_lines).strip()
+                cur.execute("UPDATE notes SET content = %s, updated_at = NOW() WHERE id = %s;", (new_content, nid))
+    conn.commit()
+
 @app.delete("/api/notes/{note_id}", status_code=204, dependencies=[Depends(require_owner)])
 def delete_note(note_id: int):
     with get_db_connection() as conn:
@@ -316,8 +345,10 @@ def delete_note(note_id: int):
             except Exception as e:
                 conn.rollback()
                 raise HTTPException(status_code=400, detail=f"Delete note failed: {e}")
-        rebuild_graph_from_notes(conn)
+        # Commit immediately so DELETE FROM notes is permanently saved
         conn.commit()
+        # Rebuild graph in fresh committed transaction
+        rebuild_graph_from_notes(conn)
     return None
 
 # ── NODE & EDGE ENDPOINTS (Legacy/Direct) ──────────────────────────────────────
@@ -378,6 +409,7 @@ def update_node(node_id: str, update: NodeUpdate):
 @app.delete("/api/nodes/{node_id}", status_code=204, dependencies=[Depends(require_owner)])
 def delete_node(node_id: str):
     with get_db_connection() as conn:
+        remove_node_name_from_notes(conn, node_id)
         with conn.cursor() as cur:
             cur.execute("SELECT id FROM nodes WHERE id = %s;", (node_id,))
             if not cur.fetchone():
@@ -388,6 +420,7 @@ def delete_node(node_id: str):
                 conn.rollback()
                 raise HTTPException(status_code=400, detail=f"Delete failed: {e}")
         conn.commit()
+        rebuild_graph_from_notes(conn)
     return None
 
 @app.post("/api/edges", status_code=201, dependencies=[Depends(require_owner)])

@@ -42,6 +42,27 @@
                     <div id="take-note-expanded" style="display: none;">
                         <input type="text" id="quick-note-title" placeholder="Title (Context e.g. Juggling Club)" autocomplete="off">
                         <textarea id="quick-note-content" placeholder="Take a note… (e.g. Jules, Noel -> Isaac)" rows="3"></textarea>
+
+                        <div class="syntax-cheatsheet-bar" style="margin-top: 8px;">
+                            <button type="button" id="quick-syntax-toggle-btn" class="btn-secondary btn-small">❓ Syntax Guide</button>
+                            <span class="shortcut-hint">⌘ + Enter to save</span>
+                        </div>
+
+                        <div id="quick-syntax-guide-panel" style="display:none; margin-top: 10px;">
+                            <table class="syntax-table">
+                                <thead>
+                                    <tr><th>Pattern</th><th>Effect</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td><code>Group Name:</code></td><td>Creates group context header</td></tr>
+                                    <tr><td><code>Name</code></td><td>Adds person to group</td></tr>
+                                    <tr><td><code>Name (detail)</code></td><td>Adds metadata tag</td></tr>
+                                    <tr><td><code>Alice -> Bob</code></td><td>Introduction edge</td></tr>
+                                    <tr><td><code>-> Bob</code></td><td>Implicit introduction chain</td></tr>
+                                    <tr><td><code>---</code></td><td>Resets context (section divider)</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
                         
                         <div class="note-bar-footer">
                             <div class="color-picker" id="quick-color-picker">

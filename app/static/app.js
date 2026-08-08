@@ -78,6 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const searchNotesInput = document.getElementById("search-notes-input");
 
     // Quick "Take a note..." Bar Logic
+    const takeNoteContainer = document.getElementById("take-note-container");
     const takeNoteCollapsed = document.getElementById("take-note-collapsed");
     const takeNoteExpanded = document.getElementById("take-note-expanded");
     const quickNotePlaceholder = document.getElementById("quick-note-placeholder");
@@ -86,12 +87,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const quickNoteCloseBtn = document.getElementById("quick-note-close-btn");
     const quickNoteSaveBtn = document.getElementById("quick-note-save-btn");
     const quickColorPicker = document.getElementById("quick-color-picker");
+    const quickSyntaxToggleBtn = document.getElementById("quick-syntax-toggle-btn");
+    const quickSyntaxGuidePanel = document.getElementById("quick-syntax-guide-panel");
 
     quickNotePlaceholder.addEventListener("click", () => {
         takeNoteCollapsed.style.display = "none";
         takeNoteExpanded.style.display = "block";
         quickNoteTitle.focus();
     });
+
+    if (quickSyntaxToggleBtn && quickSyntaxGuidePanel) {
+        quickSyntaxToggleBtn.addEventListener("click", () => {
+            const isHidden = quickSyntaxGuidePanel.style.display === "none";
+            quickSyntaxGuidePanel.style.display = isHidden ? "block" : "none";
+        });
+    }
 
     quickNoteCloseBtn.addEventListener("click", resetQuickNoteBar);
 
@@ -100,9 +110,36 @@ document.addEventListener("DOMContentLoaded", () => {
         quickNoteContent.value = "";
         activeQuickColor = "default";
         updateColorDots(quickColorPicker, "default");
+        if (quickSyntaxGuidePanel) quickSyntaxGuidePanel.style.display = "none";
         takeNoteExpanded.style.display = "none";
         takeNoteCollapsed.style.display = "block";
     }
+
+    // Keyboard shortcuts for Quick Note (Cmd + Enter or Ctrl + Enter to save)
+    [quickNoteTitle, quickNoteContent].forEach(inputEl => {
+        if (!inputEl) return;
+        inputEl.addEventListener("keydown", (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
+                e.preventDefault();
+                quickNoteSaveBtn.click();
+            } else if (e.key === "Escape") {
+                resetQuickNoteBar();
+            }
+        });
+    });
+
+    // Auto-save on click outside Take Note container
+    document.addEventListener("click", (e) => {
+        if (takeNoteExpanded.style.display !== "none" && !takeNoteContainer.contains(e.target)) {
+            const title = quickNoteTitle.value.trim();
+            const content = quickNoteContent.value.trim();
+            if (title || content) {
+                quickNoteSaveBtn.click();
+            } else {
+                resetQuickNoteBar();
+            }
+        }
+    });
 
     // Color Pickers Setup
     function setupColorPicker(pickerContainer, onSelect) {
@@ -172,6 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const card = document.createElement("div");
             card.className = `note-card note-color-${note.color || 'default'}`;
 
+            // Pin button
             const pinBtn = document.createElement("button");
             pinBtn.className = `note-card-pin-btn ${note.pinned ? 'pinned' : ''}`;
             pinBtn.innerHTML = note.pinned ? '📌' : '📌';
@@ -179,6 +217,16 @@ document.addEventListener("DOMContentLoaded", () => {
             pinBtn.addEventListener("click", async (e) => {
                 e.stopPropagation();
                 await handleUpdateNote(note.id, { pinned: !note.pinned });
+            });
+
+            // 1-Click Trash/Delete button directly on card hover
+            const trashBtn = document.createElement("button");
+            trashBtn.className = "note-card-trash-btn";
+            trashBtn.innerHTML = "🗑";
+            trashBtn.title = "Delete note";
+            trashBtn.addEventListener("click", async (e) => {
+                e.stopPropagation();
+                await handleDeleteNote(note.id);
             });
 
             const titleEl = document.createElement("div");
@@ -190,6 +238,7 @@ document.addEventListener("DOMContentLoaded", () => {
             contentEl.textContent = note.content || "";
 
             card.appendChild(pinBtn);
+            card.appendChild(trashBtn);
             if (note.title) card.appendChild(titleEl);
             card.appendChild(contentEl);
 
