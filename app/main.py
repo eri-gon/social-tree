@@ -177,11 +177,11 @@ def rebuild_graph_from_notes(conn):
                 (source, target, etype, context)
             )
 
-@app.get("/")
+@app.api_route("/", methods=["GET", "HEAD"])
 def read_root():
     return FileResponse(os.path.join(static_dir, "index.html"))
 
-@app.get("/api/graph")
+@app.api_route("/api/graph", methods=["GET", "HEAD"])
 def get_graph_data():
     nodes = []
     edges = []
