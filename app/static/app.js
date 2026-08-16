@@ -38,6 +38,38 @@ document.addEventListener("DOMContentLoaded", () => {
         return res.json();
     }
 
+    // ── Buffer & Cooldown Controller (Prevents Accidental Double Actions) ──────
+    const ACTION_BUFFER_MS = 750;
+    let isActionPending = false;
+    let lastActionTimestamp = 0;
+
+    async function executeWithBuffer(actionFn, buttonEl = null) {
+        const now = Date.now();
+        if (isActionPending || (now - lastActionTimestamp < ACTION_BUFFER_MS)) {
+            return false;
+        }
+        isActionPending = true;
+        lastActionTimestamp = now;
+        if (buttonEl) {
+            buttonEl.disabled = true;
+            buttonEl.style.opacity = "0.6";
+            buttonEl.style.cursor = "not-allowed";
+        }
+        try {
+            await actionFn();
+        } finally {
+            setTimeout(() => {
+                isActionPending = false;
+                if (buttonEl) {
+                    buttonEl.disabled = false;
+                    buttonEl.style.opacity = "";
+                    buttonEl.style.cursor = "";
+                }
+            }, ACTION_BUFFER_MS);
+        }
+        return true;
+    }
+
     // ── Navigation Tabs (Notes vs Graph) ────────────────────────────────────────
     const tabBtnNotes = document.getElementById("tab-btn-notes");
     const tabBtnGraph = document.getElementById("tab-btn-graph");
@@ -121,7 +153,9 @@ document.addEventListener("DOMContentLoaded", () => {
         inputEl.addEventListener("keydown", (e) => {
             if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
                 e.preventDefault();
-                quickNoteSaveBtn.click();
+                if (!isActionPending && (Date.now() - lastActionTimestamp >= ACTION_BUFFER_MS)) {
+                    quickNoteSaveBtn.click();
+                }
             } else if (e.key === "Escape") {
                 resetQuickNoteBar();
             }
@@ -131,6 +165,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Auto-save on click outside Take Note container
     document.addEventListener("click", (e) => {
         if (takeNoteExpanded.style.display !== "none" && !takeNoteContainer.contains(e.target)) {
+            if (isActionPending || (Date.now() - lastActionTimestamp < ACTION_BUFFER_MS)) return;
             const title = quickNoteTitle.value.trim();
             const content = quickNoteContent.value.trim();
             if (title || content) {
@@ -171,12 +206,29 @@ document.addEventListener("DOMContentLoaded", () => {
     quickNoteSaveBtn.addEventListener("click", async () => {
         const title = quickNoteTitle.value.trim();
         const content = quickNoteContent.value.trim();
+        const color = activeQuickColor;
         if (!title && !content) {
             resetQuickNoteBar();
             return;
         }
-        await handleSaveNote({ title, content, color: activeQuickColor, pinned: false });
+
+        // 1. Immediately clear entry boxes and reset quick note bar
         resetQuickNoteBar();
+        showToast("✨ Note created!", "success");
+
+        // 2. Execute note creation with 750ms buffer and draft restoration on error
+        await executeWithBuffer(async () => {
+            try {
+                await handleSaveNote({ title, content, color, pinned: false });
+            } catch (err) {
+                // Restore draft text if save failed
+                takeNoteCollapsed.style.display = "none";
+                takeNoteExpanded.style.display = "block";
+                quickNoteTitle.value = title;
+                quickNoteContent.value = content;
+                showToast("❌ Creation failed — draft restored to entry box.", "error");
+            }
+        }, quickNoteSaveBtn);
     });
 
     // Fetch and render notes
@@ -318,8 +370,14 @@ document.addEventListener("DOMContentLoaded", () => {
             updateSyncStatus("synced", "Synced");
             showToast("✅ Note saved & graph synced!", "success");
         } catch (err) {
+            const idx = allNotes.findIndex(n => n.id === tempId);
+            if (idx !== -1) {
+                allNotes.splice(idx, 1);
+                renderNotesGrid();
+            }
             updateSyncStatus("error", "Sync error");
             showToast("❌ Save failed: " + err.message, "error");
+            throw err;
         }
     }
 
@@ -452,14 +510,29 @@ document.addEventListener("DOMContentLoaded", () => {
     noteModalSaveBtn.addEventListener("click", async () => {
         const title = noteModalTitle.value.trim();
         const content = noteModalContent.value.trim();
+        const color = activeModalColor;
+        const targetEditingId = editingNoteId;
+
         if (!title && !content) { closeModal(); return; }
 
-        if (editingNoteId) {
-            await handleUpdateNote(editingNoteId, { title, content, color: activeModalColor });
-        } else {
-            await handleSaveNote({ title, content, color: activeModalColor, pinned: false });
-        }
+        // 1. Immediately close modal & clear modal inputs
         closeModal();
+        showToast(targetEditingId ? "✨ Note updated!" : "✨ Note created!", "success");
+
+        // 2. Execute modal save/update with 750ms buffer and error restoration
+        await executeWithBuffer(async () => {
+            try {
+                if (targetEditingId) {
+                    await handleUpdateNote(targetEditingId, { title, content, color });
+                } else {
+                    await handleSaveNote({ title, content, color, pinned: false });
+                }
+            } catch (err) {
+                // Restore modal with draft text if operation failed
+                openNoteModal({ id: targetEditingId, title, content, color });
+                showToast("❌ Operation failed — draft restored to modal.", "error");
+            }
+        }, noteModalSaveBtn);
     });
 
     noteModalDeleteBtn.addEventListener("click", async () => {
