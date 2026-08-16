@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const ACTION_BUFFER_MS = 750;
     let isActionPending = false;
     let lastActionTimestamp = 0;
+    const pendingCreations = new Map();
 
     async function executeWithBuffer(actionFn, buttonEl = null) {
         const now = Date.now();
@@ -356,29 +357,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!isOwner) {
             showToast("✏️ Demo mode — note saved locally.", "warn");
-            return;
+            return optimisticNote;
         }
 
         // 2. Background Sync
         updateSyncStatus("syncing", "Syncing graph...");
-        try {
-            const savedNote = await apiCall("POST", "/api/notes", noteData);
-            const idx = allNotes.findIndex(n => n.id === tempId);
-            if (idx !== -1) allNotes[idx] = savedNote;
-            renderNotesGrid();
-            refreshGraph();
-            updateSyncStatus("synced", "Synced");
-            showToast("✅ Note saved & graph synced!", "success");
-        } catch (err) {
-            const idx = allNotes.findIndex(n => n.id === tempId);
-            if (idx !== -1) {
-                allNotes.splice(idx, 1);
+        const syncPromise = (async () => {
+            try {
+                const savedNote = await apiCall("POST", "/api/notes", noteData);
+                const idx = allNotes.findIndex(n => n.id === tempId);
+                if (idx !== -1) allNotes[idx] = savedNote;
+                if (editingNoteId === tempId) editingNoteId = savedNote.id;
                 renderNotesGrid();
+                refreshGraph();
+                updateSyncStatus("synced", "Synced");
+                showToast("✅ Note saved & graph synced!", "success");
+                return savedNote;
+            } catch (err) {
+                const idx = allNotes.findIndex(n => n.id === tempId);
+                if (idx !== -1) {
+                    allNotes.splice(idx, 1);
+                    renderNotesGrid();
+                }
+                updateSyncStatus("error", "Sync error");
+                showToast("❌ Save failed: " + err.message, "error");
+                throw err;
+            } finally {
+                pendingCreations.delete(tempId);
             }
-            updateSyncStatus("error", "Sync error");
-            showToast("❌ Save failed: " + err.message, "error");
-            throw err;
-        }
+        })();
+
+        pendingCreations.set(tempId, syncPromise);
+        return syncPromise;
     }
 
     async function handleUpdateNote(noteId, updates) {
@@ -396,11 +406,31 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        let targetId = noteId;
+        if (typeof noteId === "string" && noteId.startsWith("temp-")) {
+            if (pendingCreations.has(noteId)) {
+                updateSyncStatus("syncing", "Waiting for creation before updating...");
+                try {
+                    const savedNote = await pendingCreations.get(noteId);
+                    if (savedNote && savedNote.id) {
+                        targetId = savedNote.id;
+                    } else {
+                        return;
+                    }
+                } catch (err) {
+                    return;
+                }
+            } else {
+                return;
+            }
+        }
+
         // 2. Background Sync
         updateSyncStatus("syncing", "Syncing graph...");
         try {
-            const updated = await apiCall("PUT", `/api/notes/${noteId}`, updates);
-            if (noteIndex !== -1) allNotes[noteIndex] = updated;
+            const updated = await apiCall("PUT", `/api/notes/${targetId}`, updates);
+            const idx = allNotes.findIndex(n => n.id === targetId || n.id === noteId);
+            if (idx !== -1) allNotes[idx] = updated;
             renderNotesGrid();
             refreshGraph();
             updateSyncStatus("synced", "Synced");
@@ -432,10 +462,29 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        let targetId = noteId;
+        if (typeof noteId === "string" && noteId.startsWith("temp-")) {
+            if (pendingCreations.has(noteId)) {
+                updateSyncStatus("syncing", "Waiting for creation before deleting...");
+                try {
+                    const savedNote = await pendingCreations.get(noteId);
+                    if (savedNote && savedNote.id) {
+                        targetId = savedNote.id;
+                    } else {
+                        return;
+                    }
+                } catch (err) {
+                    return;
+                }
+            } else {
+                return;
+            }
+        }
+
         // 2. Background Sync
         updateSyncStatus("syncing", "Syncing graph...");
         try {
-            await apiCall("DELETE", `/api/notes/${noteId}`);
+            await apiCall("DELETE", `/api/notes/${targetId}`);
             refreshGraph();
             updateSyncStatus("synced", "Synced");
             showToast("✅ Note deleted & graph synced!", "success");
