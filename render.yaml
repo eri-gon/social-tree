@@ -21,5 +21,5 @@ services:
         sync: false        # You paste this manually in the Render dashboard
       - key: OWNER_SECRET
         sync: false        # You paste this manually in the Render dashboard
-    healthCheckPath: /api/graph
+    healthCheckPath: /health
     autoDeploy: true       # Re-deploys on every git push to main

@@ -187,8 +187,13 @@ def rebuild_graph_from_notes(conn):
                 (source, target, etype, context)
             )
 
+@app.api_route("/health", methods=["GET", "HEAD"])
+def health_check():
+    return {"status": "ok"}
+
 @app.api_route("/", methods=["GET", "HEAD"])
 def read_root():
+
     return FileResponse(os.path.join(static_dir, "index.html"))
 
 @app.get("/favicon.ico")
