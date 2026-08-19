@@ -233,15 +233,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Fetch and render notes
-    async function loadNotes() {
+    let hasLoadedNotes = false;
+    async function loadNotes(force = false) {
+        if (hasLoadedNotes && !force) return;
         try {
             allNotes = await apiCall("GET", "/api/notes");
+            hasLoadedNotes = true;
             renderNotesGrid();
         } catch (err) {
             console.error("Failed to load notes:", err);
             showToast("Failed to load notes.", "error");
         }
     }
+
 
     function renderNotesGrid() {
         notesGrid.innerHTML = "";
@@ -330,8 +334,8 @@ document.addEventListener("DOMContentLoaded", () => {
         syncStatusBadge.addEventListener("click", () => {
             if (syncStatusBadge.classList.contains("error")) {
                 updateSyncStatus("syncing", "Retrying sync...");
-                loadNotes().then(() => {
-                    refreshGraph();
+                loadNotes(true).then(() => {
+                    refreshGraph(true);
                     updateSyncStatus("synced", "Synced");
                 }).catch(() => {
                     updateSyncStatus("error", "Sync error");
@@ -369,10 +373,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (idx !== -1) allNotes[idx] = savedNote;
                 if (editingNoteId === tempId) editingNoteId = savedNote.id;
                 renderNotesGrid();
-                refreshGraph();
+                refreshGraph(true);
                 updateSyncStatus("synced", "Synced");
                 showToast("✅ Note saved & graph synced!", "success");
                 return savedNote;
+
             } catch (err) {
                 const idx = allNotes.findIndex(n => n.id === tempId);
                 if (idx !== -1) {
@@ -432,7 +437,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const idx = allNotes.findIndex(n => n.id === targetId || n.id === noteId);
             if (idx !== -1) allNotes[idx] = updated;
             renderNotesGrid();
-            refreshGraph();
+            refreshGraph(true);
             updateSyncStatus("synced", "Synced");
         } catch (err) {
             if (noteIndex !== -1 && backupNote) {
@@ -485,9 +490,10 @@ document.addEventListener("DOMContentLoaded", () => {
         updateSyncStatus("syncing", "Syncing graph...");
         try {
             await apiCall("DELETE", `/api/notes/${targetId}`);
-            refreshGraph();
+            refreshGraph(true);
             updateSyncStatus("synced", "Synced");
             showToast("✅ Note deleted & graph synced!", "success");
+
         } catch (err) {
             if (deletedNote && noteIndex !== -1) {
                 allNotes.splice(noteIndex, 0, deletedNote);
@@ -664,12 +670,18 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    function refreshGraph() {
+    let hasLoadedGraph = false;
+    function refreshGraph(force = false) {
+        if (hasLoadedGraph && !force && allNodes.length > 0) {
+            updateGraph();
+            return;
+        }
         fetch("/api/graph")
             .then(r => r.json())
             .then(data => {
                 allNodes = data.nodes;
                 allLinks = data.edges;
+                hasLoadedGraph = true;
                 
                 // Restore saved positions if available
                 const saved = getSavedPositions();
@@ -688,6 +700,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.error("Error loading graph:", err);
             });
     }
+
 
     // ── HSL Cluster Color & Centrality Heatmap Helpers ────────────────────────
     function getContextColor(contextName) {
@@ -919,7 +932,7 @@ document.addEventListener("DOMContentLoaded", () => {
             detailCard.style.display = "none";
             selectedNode = null;
             localStorage.removeItem(POS_CACHE_KEY); // Clear position cache on reset
-            refreshGraph();
+            refreshGraph(true);
             svg.transition().duration(750).call(zoom.transform, d3.zoomIdentity);
         });
     }
@@ -971,7 +984,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // ── Initial Load ─────────────────────────────────────────────────────────────
     loadNotes();
-    refreshGraph();
+
 
     document.addEventListener("keydown", e => {
         if (e.key === "Escape") {

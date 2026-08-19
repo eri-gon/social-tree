@@ -7,6 +7,7 @@ from typing import Optional, List
 from urllib.parse import urlparse
 
 from fastapi import FastAPI, HTTPException, Depends, Header, Query
+from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
@@ -24,6 +25,15 @@ sys.path.insert(0, os.path.join(_ROOT, "parser"))
 from parser import parse_notes_text
 
 app = FastAPI(title="Personal CRM Social Graph")
+app.add_middleware(GZipMiddleware, minimum_size=500)
+
+@app.middleware("http")
+async def add_cache_headers(request, call_next):
+    response = await call_next(request)
+    if request.url.path.startswith("/static/"):
+        response.headers["Cache-Control"] = "public, max-age=86400"
+    return response
+
 
 # Database Configuration: prefer DATABASE_URL (cloud), fall back to local config
 DATABASE_URL = os.environ.get("DATABASE_URL", "").strip()
